@@ -10,6 +10,9 @@ import { OasaModule } from 'src/oasa/oasa.module';
 import { RouteStop } from './entities/routeStops.entity';
 import { DBUpdateService } from './db.update.service';
 import { DBupdateController } from './db.update.controller';
+import { LiveUpdatesService } from './live.updates.service';
+import { LiveUpdatesController } from './live.updates.controller';
+import { HttpModule } from '@nestjs/axios';
 
 
 @Module({
@@ -21,9 +24,10 @@ import { DBupdateController } from './db.update.controller';
             Stop,
             RouteStop
         ]), 
-        OasaModule
+        OasaModule,
+        HttpModule
     ],
-    providers: [TransitService, DBUpdateService],
-    controllers: [TransitController, DBupdateController]
+    providers: [TransitService, DBUpdateService, LiveUpdatesService],
+    controllers: [TransitController, DBupdateController, LiveUpdatesController]
 })
 export class TransitModule {}

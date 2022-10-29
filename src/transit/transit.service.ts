@@ -55,10 +55,10 @@ export class TransitService {
                 WHERE rs."routeCode"='${code}';
             `);
 
-            return {stops: stops, points: points};
+            return {stops: stops, points: points, code: code};
         }
 
-        return {stops: [], points: []};
+        return {stops: [], points: [], code: ''};
     }
 
 

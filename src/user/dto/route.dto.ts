@@ -13,4 +13,5 @@ export class RouteDto{
 export class RouteInfo{
     public stops: Stop[];
     public points: Point[];
+    public code: string;
 }

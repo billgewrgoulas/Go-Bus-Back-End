@@ -21,6 +21,9 @@ export class Line{
     @Column({nullable: false, type: 'varchar'})
     public desc: string;
 
+    @Column({type: 'simple-array', nullable: true})
+    public routeCodes: string[];
+
     @OneToMany(() => Route, (route: Route): Line => route.line)
     public routes: Route[];
 
