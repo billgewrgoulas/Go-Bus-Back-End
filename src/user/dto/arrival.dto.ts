@@ -1,3 +1,4 @@
+import { Stop } from "src/transit/entities/stop.entity";
 
 export class Arrival{
 
@@ -7,15 +8,26 @@ export class Arrival{
     public vehicleCode: string;
     public routeName: string;
     public lineCode: string;
-    public stopCode: string;
+    public longitude: string;
+    public latitude: string;
+    public nextStop: string;
 
-    public constructor(arr: Arrival, code: string){
+    public constructor(arr: Arrival){
         this.arrivalMins = arr.arrivalMins;
         this.arrivalSeconds = arr.arrivalSeconds;
         this.routeCode = arr.routeCode;
         this.vehicleCode = arr.vehicleCode;
         this.routeName = arr.routeName;
         this.lineCode = arr.lineCode;
-        this.stopCode = code;
+        this.latitude = arr.latitude;
+        this.longitude = arr.longitude;
+    }
+
+    public setNext(stop: Stop | undefined){
+
+        if(stop){
+            this.nextStop = stop.desc
+        }
+
     }
 }

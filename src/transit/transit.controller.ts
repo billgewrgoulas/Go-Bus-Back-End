@@ -1,14 +1,10 @@
 import { Controller, Get, Header } from '@nestjs/common';
 import { Param } from '@nestjs/common/decorators/http/route-params.decorator';
-import { OasaService } from 'src/oasa/oasa.service';
-import { LineDto } from 'src/user/dto/line.dto';
-import { PointDto } from 'src/user/dto/point.dto';
-import { RouteDto, RouteInfo } from 'src/user/dto/route.dto';
-import { StopDto } from 'src/user/dto/stop.dto';
+import { RouteInfo } from 'src/user/dto/route.dto';
+import { ScheduleDetails } from 'src/user/dto/schedule.details';
 import { Line } from './entities/line.entity';
-import { Point } from './entities/point.entity';
 import { Route } from './entities/route.entity';
-
+import { Schedule } from './entities/schedule.entity';
 import { Stop } from './entities/stop.entity';
 import { TransitService } from './transit.service';
 
@@ -23,6 +19,12 @@ export class TransitController {
         return this.transitService.getLines();
     }
 
+    @Get('/stops')
+    @Header('Content-Type', 'application/json')
+    public async getStops(): Promise<Stop[]>{
+        return this.transitService.getAllStops();
+    }
+
     @Get('/lineRoutes/:id')
     @Header('Content-Type', 'application/json')
     public async getLineRoutes(@Param('id') id: string): Promise<Route[]>{
@@ -33,6 +35,13 @@ export class TransitController {
     @Header('Content-Type', 'application/json')
     public async getRouteStops(@Param('code') code: string): Promise<RouteInfo>{
         return this.transitService.getRouteStopsAndPoints(code);
+    }
+
+    @Get('/routeSchedules/:code')
+    @Header('Content-Type', 'application/json')
+    public async getRouteSchedule(@Param('code') code: string): Promise<ScheduleDetails>{
+        const schedules: Schedule[] = await this.transitService.getDailyRouteSchedule(code);
+        return new ScheduleDetails(schedules, code);
     }
 
 }

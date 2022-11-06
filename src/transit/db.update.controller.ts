@@ -70,20 +70,20 @@ export class DBupdateController {
         
     }
 
-    @Get('/updateLineRoutes')
+    @Get('/updateTrips')
     @Header('Content-Type', 'application/json')
-    public async populateLineRoutes(){
+    public async populateTrips(){
 
-        
+        const routes: Route[] = await this.transit.getRoutes();
 
-        
+        for (const route of routes) {
+            const tripsPromise = await <any>this.oasa.getRouteTrips(route.code);
+            if(tripsPromise){
+                await this.transit.saveSchedule(tripsPromise.data);
+            }
+        }
+
+        return 'ok';
     }
-
-
-
-    
-
-
-    
 
 }

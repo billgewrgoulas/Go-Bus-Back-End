@@ -13,6 +13,7 @@ import { DBupdateController } from './db.update.controller';
 import { LiveUpdatesService } from './live.updates.service';
 import { LiveUpdatesController } from './live.updates.controller';
 import { HttpModule } from '@nestjs/axios';
+import { Schedule } from './entities/schedule.entity';
 
 
 @Module({
@@ -22,7 +23,8 @@ import { HttpModule } from '@nestjs/axios';
             Route, 
             Point,
             Stop,
-            RouteStop
+            RouteStop,
+            Schedule
         ]), 
         OasaModule,
         HttpModule

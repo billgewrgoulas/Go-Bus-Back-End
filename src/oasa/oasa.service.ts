@@ -6,7 +6,7 @@ import { lastValueFrom, of } from 'rxjs';
 export class OasaService {
 
     private readonly URI: string = 'http://telematics.oasa.gr/api/?act=';
-    private readonly token: string = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjcxMzQwNDd9.6UXqCSArk6pittUOXVlD1ZQj9s5wVu-x6Q2skhG9u24';
+    private readonly token: string = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjczMDA1Mjh9.7TFhaxx21ceobsZWSA0keQeTNengcDuwhZUv7MjBxX0';
 
     constructor(private http: HttpService){}
 
@@ -74,5 +74,12 @@ export class OasaService {
         return await lastValueFrom(this.http.get(uri, {withCredentials: false, headers:{
             Authorization: 'Bearer ' + this.token,
         }})).catch(e => console.log(e));
+    }
+
+    public async getRouteTrips(code: string){
+        const uri = `https://rest.citybus.gr/api/v1/106/trips/route/${code}`;
+        return await lastValueFrom(this.http.get(uri, {withCredentials: false, headers:{
+            Authorization: 'Bearer ' + this.token,
+        }})).catch(e => console.log(e.code));
     }
 }

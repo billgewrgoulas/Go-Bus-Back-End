@@ -13,6 +13,7 @@ export class Point{
     @Column({nullable: false, type: 'varchar'})
     public latitude: string;
 
+    @Index()
     @Column({nullable: false, type: 'varchar'})
     public routeCode: string;
 
