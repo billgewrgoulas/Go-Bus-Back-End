@@ -44,4 +44,10 @@ export class TransitController {
         return new ScheduleDetails(schedules, code);
     }
 
+    @Get('/filterStops/:code')
+    @Header('Content-Type', 'application/json')
+    public async getFilteredStops(@Param('code') code: string): Promise<Stop[]>{
+        return  this.transitService.getStopsOfRouteStop(code);
+    }
+
 }

@@ -44,14 +44,4 @@ export class LiveUpdatesController {
         return arrivals;
     }
 
-    @Post('/paths/:code')
-    @Header('Content-Type', 'application/json')
-    public async getSubPaths(@Body() data: any){
-
-        
-        
-        
-    }
-
-
 }

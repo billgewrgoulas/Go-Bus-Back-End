@@ -36,15 +36,6 @@ export class TransitService {
             .catch(e => console.log(e));
     }
 
-    public async getRouteStops(code: string): Promise<Stop[]>{
-        return await this.dataSource.query(`
-            SELECT "desc", "desc_eng", "code", "latitude", "longitude"
-            FROM transit_data.route_stop as rs
-            INNER JOIN transit_data.stop as s ON s."code"=rs."stopCode"
-            WHERE rs."routeCode"='${code}';
-        `);
-    }
-
     public async getRouteStopsAndPoints(code: string): Promise<RouteInfo>{
 
         const points: Point[] = await this.pointRepo
@@ -76,22 +67,29 @@ export class TransitService {
             .catch(e => console.log(e));
     }
 
-    public async getSubPath(routeCode: string, bus: Arrival, stop: Stop){
-
-        const points: Point[] = await this.pointRepo
-            .createQueryBuilder()
-            .select(['*'])
-            .where({routeCode: routeCode})
-            .execute()
-            .catch(e => console.log(e));
-
-        
+    public async getRouteStops(code: string): Promise<Stop[]>{
+        return await this.dataSource.query(`
+            SELECT "desc", "desc_eng", "code", "latitude", "longitude"
+            FROM transit_data.route_stop as rs
+            INNER JOIN transit_data.stop as s ON s."code"=rs."stopCode"
+            WHERE rs."routeCode"='${code}';
+        `).catch(e => console.log(e));
     }
 
-    private dist(p1: Point, p2: Arrival){
-        return Math.sqrt(Math.pow(+p1.latitude - +p2.latitude, 2) + Math.pow(+p1.longitude - +p2.longitude, 2)); 
+    public async getStopsOfRouteStop(stopCode: string): Promise<Stop[]>{
+        return await this.dataSource.query(`
+            SELECT DISTINCT "desc", "desc_eng", "code", "latitude", "longitude"
+            FROM transit_data.route_stop as rs
+            INNER JOIN transit_data.stop as s 
+            ON s."code"=rs."stopCode"
+            WHERE rs."routeCode" IN (
+                SELECT "routeCode"
+                FROM transit_data.route_stop as rs
+                INNER JOIN transit_data.route as r
+                ON r."code"=rs."routeCode"
+                WHERE rs."stopCode"='${stopCode}'
+            );
+        `).catch(e => console.log(e));
     }
-
-        
 
 }

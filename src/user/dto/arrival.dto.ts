@@ -10,7 +10,6 @@ export class Arrival{
     public lineCode: string;
     public longitude: string;
     public latitude: string;
-    public nextStop: string;
 
     public constructor(arr: Arrival){
         this.arrivalMins = arr.arrivalMins;
@@ -23,11 +22,4 @@ export class Arrival{
         this.longitude = arr.longitude;
     }
 
-    public setNext(stop: Stop | undefined){
-
-        if(stop){
-            this.nextStop = stop.desc
-        }
-
-    }
 }
