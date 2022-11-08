@@ -71,7 +71,8 @@ export class TransitService {
         return await this.dataSource.query(`
             SELECT "desc", "desc_eng", "code", "latitude", "longitude"
             FROM transit_data.route_stop as rs
-            INNER JOIN transit_data.stop as s ON s."code"=rs."stopCode"
+            INNER JOIN transit_data.stop as s 
+            ON s."code"=rs."stopCode"
             WHERE rs."routeCode"='${code}';
         `).catch(e => console.log(e));
     }
