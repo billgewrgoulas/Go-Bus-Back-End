@@ -1,9 +1,9 @@
 import { Schedule } from "src/transit/entities/schedule.entity";
 
-export class ScheduleDetails{
+export class ScheduleDetailsDto{
 
-    public schedules: Schedule[];
-    public routeCode: string;
+    private schedules: Schedule[];
+    private routeCode: string;
 
     public constructor(sch: Schedule[], code: string){
         this.schedules = sch;

@@ -1,4 +1,4 @@
-import { User } from 'src/typeorm/user.entity';
+import { User } from 'src/user/entities/user.entity';
 import { Column, Entity, OneToMany, PrimaryColumn, Index, ManyToOne, JoinTable, ManyToMany, JoinColumn} from 'typeorm';
 import { Line } from './line.entity';
 import { Point } from './point.entity';

@@ -10,8 +10,16 @@ export class RouteDto{
     public desc: string;
 }
 
-export class RouteInfo{
+export class RouteInfoDto{
+
     public stops: Stop[];
     public points: Point[];
     public code: string;
+
+    constructor(stops: Stop[], points: Point[], code: string){
+        this.stops = stops;
+        this.points = points = points;
+        this.code = code;
+    }
+    
 }
