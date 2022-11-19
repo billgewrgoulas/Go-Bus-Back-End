@@ -24,6 +24,7 @@ import { RouteRepository } from './repositories/route.repository';
 import { PointRepository } from './repositories/point.repository';
 import { ScheduleRepository } from './repositories/schedule.repository';
 import { StopRepository } from './repositories/stop.repository';
+import { Context } from './Navigator/context';
 
 
 @Module({
@@ -33,7 +34,7 @@ import { StopRepository } from './repositories/stop.repository';
     ],
     providers: [
         DBUpdateService, LiveUpdatesService, LineService, RouteService,
-        PointService, ScheduleService, StopService, 
+        PointService, ScheduleService, StopService, Context,
         LineRepository, RouteRepository, PointRepository, ScheduleRepository, StopRepository
     ],
     controllers: [TransitController, DBupdateController, LiveUpdatesController]

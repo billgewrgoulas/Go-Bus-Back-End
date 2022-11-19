@@ -4,7 +4,10 @@ import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity
 
 export abstract class IGenericRepository<T extends QueryDeepPartialEntity<ObjectLiteral>> {
 
-	protected constructor(private readonly entityRepository: Repository<T>, protected db?: DataSource){}
+	protected constructor(
+		private readonly entityRepository: Repository<T>, 
+		protected readonly db?: DataSource
+	){}
 
 	protected async getAll(): Promise<T[]>{
 		return this.entityRepository

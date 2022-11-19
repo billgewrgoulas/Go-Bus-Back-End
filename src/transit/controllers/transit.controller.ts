@@ -46,10 +46,12 @@ export class TransitController {
     @Header('Content-Type', 'application/json')
     public async getRouteStops(@Param('code') code: string): Promise<RouteInfoDto>{
 
-        const stops: Stop[] = await this.stops.getRouteStops(code);
-        const points: Point[] = await this.points.getRoutePoints(code);
+        const resolve = await Promise.all([
+            this.stops.getRouteStops(code),
+            this.points.getRoutePoints(code)
+        ]);
 
-        return new RouteInfoDto(stops, points, code);
+        return new RouteInfoDto(resolve[0], resolve[1], code);
     }
 
     @Get('/routeSchedules/:code')
@@ -61,16 +63,10 @@ export class TransitController {
         return new ScheduleDetailsDto(schedules, code);
     }
 
-    // @Get('/filterStops/:code')
-    // @Header('Content-Type', 'application/json')
-    // public async getFilteredStops(@Param('code') code: string): Promise<Stop[]>{
-    //     return  this.transitService.getStopsOfRouteStop(code);
-    // }
-
-    // @Post('/getTrips')
-    // @Header('Content-Type', 'application/json')
-    // public async getTrips(@Body() data: any){
-    //     return this.transitService.calculateTrip(data.start, data.end);
-    // }
+    @Post('/getPaths')
+    @Header('Content-Type', 'application/json')
+    public async getTrips(@Body() data: any): Promise<Route[]>{
+        return this.routes.getCustomPath(data.data);
+    }
 
 }

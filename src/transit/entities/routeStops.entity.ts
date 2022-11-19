@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
+import { Column, Entity, Index, PrimaryGeneratedColumn} from 'typeorm';
 
 @Entity()
 export class RouteStop{
@@ -6,9 +6,11 @@ export class RouteStop{
     @PrimaryGeneratedColumn({type: 'bigint'})
     public id: number;
 
+    @Index({unique: false})
     @Column({type: 'varchar'})
     public stopCode: string;
 
+    @Index({unique: false})
     @Column({type: 'varchar'})
     public routeCode: string;
 
