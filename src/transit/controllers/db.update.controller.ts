@@ -7,6 +7,7 @@ import { PointService } from '../services/points.service';
 import { RouteService } from '../services/routes.service';
 import { ScheduleService } from '../services/schedule.service';
 import { StopService } from '../services/stop.service';
+import { Schedule } from '../entities/schedule.entity';
 
 @Controller('update')
 export class DBupdateController {
@@ -74,18 +75,34 @@ export class DBupdateController {
 
     @Get('/updateTrips')
     @Header('Content-Type', 'application/json')
-    public async populateTrips(){
+    public async populateTrips(): Promise<string>{
 
-        // const routes: Route[] = await this.transit.getRoutes();
+        const routes: Route[] = await this.routes.getRoutes();
 
-        // for (const route of routes) {
-        //     const tripsPromise = await <any>this.oasa.getRouteTrips(route.code);
-        //     if(tripsPromise){
-        //         await this.transit.saveSchedule(tripsPromise.data);
-        //     }
-        // }
+        for (const route of routes) {
+            const tripsPromise = await <any>this.db.getRouteTrips(route.code);
+            if(tripsPromise){
 
-        // return 'ok';
+                await this.sleep(200);
+
+                const trips: Schedule[] = [];
+                for (const trip of tripsPromise.data) {
+                    let new_trip: Schedule = new Schedule();
+                    new_trip = {...trip};
+                    new_trip.line = trip.lineCode;
+                    new_trip.trip_id = trip.id;
+                    trips.push(new_trip);
+                }
+
+                await this.schedules.insertTrips(trips);
+            }
+        }
+
+        return 'ok';
+    }
+
+    private sleep(duration: number): Promise<void>{
+        return new Promise((resolve) => setTimeout(resolve, duration));
     }
 
 }

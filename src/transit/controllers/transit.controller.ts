@@ -10,6 +10,7 @@ import { PointService } from '../services/points.service';
 import { RouteService } from '../services/routes.service';
 import { ScheduleService } from '../services/schedule.service';
 import { StopService } from '../services/stop.service';
+import { Plan } from '../transitDtos/itinerary.dto';
 import { RouteInfoDto } from '../transitDtos/route.dto';
 import { ScheduleDetailsDto } from '../transitDtos/schedule.details';
 
@@ -65,7 +66,7 @@ export class TransitController {
 
     @Post('/getPaths')
     @Header('Content-Type', 'application/json')
-    public async getTrips(@Body() data: any): Promise<Route[]>{
+    public getTrips(@Body() data: any): Promise<Route[] | Plan>{
         return this.routes.getCustomPath(data.data);
     }
 

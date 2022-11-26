@@ -14,7 +14,7 @@ export abstract class IGenericRepository<T extends QueryDeepPartialEntity<Object
 			.createQueryBuilder()
 			.select(['*'])
 			.execute()
-			.catch(e => console.log(e));
+			.catch(e => console.log(e.detail));
 	}
 
 	protected async get(spec: any): Promise<T[]>{
@@ -23,7 +23,7 @@ export abstract class IGenericRepository<T extends QueryDeepPartialEntity<Object
 			.select(['*'])
 			.where(spec)
 			.execute()
-			.catch(e => console.log(e));
+			.catch(e => console.log(e.detail));
 	}
 
 	protected async insert(data: T[]): Promise<void | UpdateResult>{
@@ -32,7 +32,7 @@ export abstract class IGenericRepository<T extends QueryDeepPartialEntity<Object
       		.insert()
       		.values(data)
       		.execute()
-      		.catch(e => console.log(e));
+      		.catch(e => console.log(e.detail));
 	}
 
 }

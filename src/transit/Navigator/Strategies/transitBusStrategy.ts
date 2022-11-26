@@ -4,7 +4,7 @@ import { TripState } from "src/transit/transitDtos/trip.state";
 import { Repository } from "typeorm";
 import { NavigatorStrategy } from "../navigatorStrategy";
 
-export class SingleRouteStrategy implements NavigatorStrategy{
+export class SingleRouteStrategy implements NavigatorStrategy<Route>{
 
     public async buildRoute(tripState: TripState, routeRepo: RouteRepository): Promise<Route[]> {
 

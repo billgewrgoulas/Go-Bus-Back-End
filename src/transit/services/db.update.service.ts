@@ -5,8 +5,8 @@ import { lastValueFrom } from 'rxjs';
 @Injectable()
 export class DBUpdateService {
 
-    private token: string = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjczMDA1Mjh9.7TFhaxx21ceobsZWSA0keQeTNengcDuwhZUv7MjBxX0';
-    private url: string = 'https://dev-rest.citybus.gr/api/v1/el/106/';
+    private token: string = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjkyMTMwNzF9.YA3uZOFBaFnAvrfHhOjA2wsfSqCRY0Qc6AIbx0VGmow';
+    private url: string = 'https://rest.citybus.gr/api/v1/el/106/';
 
     constructor(private http: HttpService){}
 

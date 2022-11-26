@@ -1,10 +1,13 @@
-import { Column, Entity, OneToMany, PrimaryColumn, Index, ManyToMany, JoinTable, JoinColumn} from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryColumn, Index, ManyToMany, JoinTable, JoinColumn, PrimaryGeneratedColumn} from 'typeorm';
 
 @Entity()
 export class Schedule{
 
-    @PrimaryColumn({nullable: false, type: 'bigint'})
+    @PrimaryGeneratedColumn({type: 'bigint'})
     public id: number;
+
+    @PrimaryColumn({type: 'bigint', nullable: false})
+    public trip_id: number;
 
     @PrimaryColumn({nullable: false, type: 'int'})
     public day: number;

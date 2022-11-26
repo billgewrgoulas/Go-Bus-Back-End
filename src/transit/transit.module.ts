@@ -25,6 +25,7 @@ import { PointRepository } from './repositories/point.repository';
 import { ScheduleRepository } from './repositories/schedule.repository';
 import { StopRepository } from './repositories/stop.repository';
 import { Context } from './Navigator/context';
+import { OTPService } from './services/otp.service';
 
 
 @Module({

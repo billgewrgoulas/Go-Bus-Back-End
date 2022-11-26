@@ -11,4 +11,8 @@ export class ScheduleService {
         return this.repo.get(routeCode);
     }
 
+    public async insertTrips(trips: Schedule[]): Promise<any>{
+        return this.repo.insert(trips);
+    }
+
 }
