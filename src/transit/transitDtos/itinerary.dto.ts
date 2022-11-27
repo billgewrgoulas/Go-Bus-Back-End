@@ -69,6 +69,7 @@ export class Leg{
     public to: Vertex;
     public intermediateStops: Vertex[];
     public legGeometry: any;
+    public flex: number;
 
     constructor(leg: Leg, steps: Step[], from: Vertex, to: Vertex, stops: Vertex[], points: string){
         this.points = polyline.decode(points);
@@ -89,6 +90,10 @@ export class Leg{
         this.to = to;
         this.departureDelay = leg.departureDelay;
         this.intermediateStops = stops;
+    }
+
+    public setFlexGrow(totalDuration: number){
+        this.flex = Math.floor(totalDuration/this.duration);
     }
 
 }

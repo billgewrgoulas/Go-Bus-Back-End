@@ -46,7 +46,10 @@ export class OTPStrategy implements NavigatorStrategy<Route>{
             itineraries.push(new Itinerary(it, legs));
         }
 
-        return new Plan(plan, itineraries, duration, totalWlk);
+        const new_plan: Plan = new Plan(plan, itineraries, duration, totalWlk);        
+        new_plan.itineraries.forEach(it => it.legs.forEach(leg => leg.setFlexGrow(it.duration)));
+
+        return new_plan;
     }
 
 }
