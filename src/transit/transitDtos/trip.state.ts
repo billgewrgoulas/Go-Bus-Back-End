@@ -5,7 +5,7 @@ export interface TripState {
     options: string[];
     direction: string;
     time: string;
-    date: string;
+    date: Date;
     arriveBy: string;
     sortBy: string;
     mode: string;
@@ -66,7 +66,7 @@ export class OTPParams{
         return params.join('');
     }
 
-    private apiDateFormat(date: string): string{
+    private apiDateFormat(date: Date): string{
 
         let new_date: Date = new Date(date);
         let year = new_date.getFullYear();

@@ -17,14 +17,12 @@ export class OTPStrategy implements NavigatorStrategy<Route>{
         const { data } = await <any>otp.getTrips(queryString);
         const plan: Plan = <Plan>data.plan;
 
-        let totalWlk = 0;
-        let duration = 0;
-
         const itineraries: Itinerary[] = [];
         for (const it of plan.itineraries) {
 
-            duration += it.duration;
-            totalWlk += it.walkTime;
+            if(it.transitTime == 0){
+                continue;
+            }
             
             const legs: Leg[] = [];
             for(const leg of it.legs){
@@ -46,7 +44,7 @@ export class OTPStrategy implements NavigatorStrategy<Route>{
             itineraries.push(new Itinerary(it, legs));
         }
 
-        const new_plan: Plan = new Plan(plan, itineraries, duration, totalWlk);        
+        const new_plan: Plan = new Plan(plan, itineraries);        
         new_plan.itineraries.forEach(it => it.legs.forEach(leg => leg.setFlexGrow(it.duration)));
 
         return new_plan;

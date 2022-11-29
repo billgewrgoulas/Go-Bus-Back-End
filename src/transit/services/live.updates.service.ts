@@ -5,7 +5,7 @@ import { lastValueFrom, of } from 'rxjs';
 @Injectable()
 export class LiveUpdatesService {
 
-    private readonly token: string = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjkyMTMwNzF9.YA3uZOFBaFnAvrfHhOjA2wsfSqCRY0Qc6AIbx0VGmow';
+    private readonly token: string = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2Njk5Mjg3Njd9.90CAjQ-07oMEIViYya4n7ct7eloiHbqLmtF-iD67_VU';
     private readonly uri: string = 'https://rest.citybus.gr/api/v1/el/106/';
     
     constructor(private http: HttpService){}
