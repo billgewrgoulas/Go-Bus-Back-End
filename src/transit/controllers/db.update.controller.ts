@@ -1,23 +1,15 @@
 import { Controller, Get, Header } from '@nestjs/common';
 import { DBUpdateService } from '../services/db.update.service';
 import { Route } from '../entities/route.entity';
-import { RouteStop } from '../entities/routeStops.entity';
-import { LineService } from '../services/line.service';
-import { PointService } from '../services/points.service';
-import { RouteService } from '../services/routes.service';
-import { ScheduleService } from '../services/schedule.service';
-import { StopService } from '../services/stop.service';
 import { Schedule } from '../entities/schedule.entity';
+import { DataService } from '../services/data.service';
+import { Trip, TripStatus } from '../entities/tripStatus';
 
 @Controller('update')
 export class DBupdateController {
 
     constructor(
-		private lines: LineService,
-		private routes: RouteService, 
-		private points: PointService,
-		private stops: StopService,
-		private schedules: ScheduleService,
+		private data: DataService,
         private db: DBUpdateService
 	){}
 
@@ -77,7 +69,7 @@ export class DBupdateController {
     @Header('Content-Type', 'application/json')
     public async populateTrips(): Promise<string>{
 
-        const routes: Route[] = await this.routes.getRoutes();
+        const routes: Route[] = await this.data.routes.getRoutes();
 
         for (const route of routes) {
             const tripsPromise = await <any>this.db.getRouteTrips(route.code);
@@ -94,10 +86,57 @@ export class DBupdateController {
                     trips.push(new_trip);
                 }
 
-                await this.schedules.insertTrips(trips);
+                await this.data.schedule.insertTrips(trips);
             }
         }
 
+        return 'ok';
+    }
+
+    @Get('/populateTrips')
+    public async populate(): Promise<string>{
+        const schedules: Schedule[] = await this.data.schedule.getAll();
+
+        const trips: Trip[] = [];
+
+        for (const sch of schedules) {
+            const trip: Trip = new Trip();
+            trip.debarkation = 0;
+            trip.embarkation = 0;
+            trip.occupied = 0;
+            trip.stopCode = sch.stopCode;
+            trip.totalSeats = 30;
+            trip.trip_id = sch.trip_id;
+            trip.id = sch.id;
+            trip.tripTime = sch.tripTime;
+            trips.push(trip);
+        }
+
+        await this.data.trips.insertTrips(trips);
+        return 'ok';
+    }
+
+    @Get('/populateTripStatus')
+    public async populateStatuses(): Promise<string>{
+        const schedules: Schedule[] = await this.data.schedule.getAll();
+
+        const trips: TripStatus[] = [];
+        const set = new Set<number>();
+
+        for (const sch of schedules) {
+
+            if(!set.has(sch.trip_id)){
+                const trip: TripStatus = new TripStatus();
+                trip.occupied = 0;
+                trip.totalSeats = 30;
+                trip.trip_id = sch.trip_id;
+                trips.push(trip);
+                set.add(sch.trip_id);
+            }
+
+        }
+
+        await this.data.tripStatus.insertDetails(trips);
         return 'ok';
     }
 

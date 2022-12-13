@@ -1,6 +1,6 @@
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository, UpdateResult } from "typeorm";
-import { Schedule } from "../entities/schedule.entity";
+import { Schedule } from "../transit/entities/schedule.entity";
 import { IGenericRepository } from "./generic.repository";
 
 export class ScheduleRepository extends IGenericRepository<Schedule>{
@@ -19,6 +19,10 @@ export class ScheduleRepository extends IGenericRepository<Schedule>{
 
     public override insert(data: Schedule[]): Promise<void | UpdateResult> {
         return super.insert(data);
+    }
+
+    public getTrip(day: number, routeCode: string, stopCode: string): Promise<Schedule[]>{
+        return super.get({routeCode: routeCode, day: day, stopCode: stopCode});
     }
 
 }

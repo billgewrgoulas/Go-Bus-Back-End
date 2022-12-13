@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Stop } from '../entities/stop.entity';
-import { StopRepository } from '../repositories/stop.repository';
+import { StopRepository } from '../../repositories/stop.repository';
 
 @Injectable()
 export class StopService {

@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectDataSource, InjectRepository } from "@nestjs/typeorm";
 import { DataSource, Repository, UpdateResult } from "typeorm";
-import { Line } from "../entities/line.entity";
+import { Line } from "../transit/entities/line.entity";
 import { IGenericRepository } from "./generic.repository";
 
 @Injectable()

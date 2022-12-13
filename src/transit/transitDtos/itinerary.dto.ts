@@ -78,6 +78,7 @@ export class Leg{
     public intermediateStops: Vertex[] = [];
     public legGeometry: any;
     public flex: number;
+    public occupancyStatus: number;
 
     constructor(leg: Leg, steps: Step[], from: Vertex, to: Vertex, stops: Vertex[], points: string){
         this.points = polyline.decode(points);
@@ -160,13 +161,15 @@ export class Plan{
     public arrival: string;
     public from: Vertex;
     public to: Vertex;
+    public slug: String;
     public itineraries: Itinerary[];
 
-    constructor(plan: Plan, it: Itinerary[]){
+    constructor(plan: Plan, it: Itinerary[], slug: string){
         this.date = new Date(plan.date).toLocaleString();
         this.from = new Vertex(plan.from);
         this.to = new Vertex(plan.to);
         this.itineraries = it;
+        this.slug = slug;
     }
 
 }

@@ -1,5 +1,5 @@
 import { Route } from "src/transit/entities/route.entity";
-import { RouteRepository } from "src/transit/repositories/route.repository";
+import { RouteRepository } from "src/repositories/route.repository";
 import { TripState } from "src/transit/transitDtos/trip.state";
 import { Repository } from "typeorm";
 import { NavigatorStrategy } from "../navigatorStrategy";

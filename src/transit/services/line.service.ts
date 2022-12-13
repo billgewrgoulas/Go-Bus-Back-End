@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Line } from '../entities/line.entity';
-import { LineRepository } from '../repositories/line.repository';
+import { LineRepository } from '../../repositories/line.repository';
 
 @Injectable()
 export class LineService {

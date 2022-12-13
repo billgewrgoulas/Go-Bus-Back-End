@@ -2,14 +2,14 @@ import { Stop } from "src/transit/entities/stop.entity";
 
 export class ArrivalDto{
 
-    private departureMins: number;
-    private departureSeconds: number;
-    private routeCode: string;
-    private vehicleCode: string;
-    private routeName: string;
-    private lineCode: string;
-    private longitude: string;
-    private latitude: string;
+    public departureMins: number;
+    public departureSeconds: number;
+    public routeCode: string;
+    public vehicleCode: string;
+    public routeName: string;
+    public lineCode: string;
+    public longitude: string;
+    public latitude: string;
 
     public constructor(arr: any){
         this.departureMins = arr.departureMins;

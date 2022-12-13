@@ -5,7 +5,7 @@ import { Context } from '../Navigator/context';
 import { NavigatorStrategy } from '../Navigator/navigatorStrategy';
 import { OTPStrategy } from '../Navigator/Strategies/otp.strategy';
 import { SingleRouteStrategy } from '../Navigator/Strategies/transitBusStrategy';
-import { RouteRepository } from '../repositories/route.repository';
+import { RouteRepository } from '../../repositories/route.repository';
 import { Plan } from '../transitDtos/itinerary.dto';
 import { TripState } from '../transitDtos/trip.state';
 

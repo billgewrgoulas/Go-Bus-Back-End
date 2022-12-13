@@ -1,6 +1,6 @@
 import { HttpService } from "@nestjs/axios";
 import { Route } from "src/transit/entities/route.entity";
-import { RouteRepository } from "src/transit/repositories/route.repository";
+import { RouteRepository } from "src/repositories/route.repository";
 import { OTPService } from "src/transit/services/otp.service";
 import { Itinerary, Leg, Plan, Step, Vertex } from "src/transit/transitDtos/itinerary.dto";
 import { OTPParams, TripState } from "src/transit/transitDtos/trip.state";
@@ -20,10 +20,6 @@ export class OTPStrategy implements NavigatorStrategy<Route>{
         const itineraries: Itinerary[] = [];
         for (const it of plan.itineraries) {
 
-            if(it.transitTime == 0){
-                continue;
-            }
-            
             const legs: Leg[] = [];
             for(const leg of it.legs){
 
@@ -44,7 +40,10 @@ export class OTPStrategy implements NavigatorStrategy<Route>{
             itineraries.push(new Itinerary(it, legs));
         }
 
-        const new_plan: Plan = new Plan(plan, itineraries);        
+        const it = itineraries.shift();
+        itineraries.push(it);
+
+        const new_plan: Plan = new Plan(plan, itineraries, queryString);        
         new_plan.itineraries.forEach(it => it.legs.forEach(leg => leg.setFlexGrow(it.duration)));
 
         return new_plan;

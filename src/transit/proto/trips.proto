@@ -1,0 +1,65 @@
+package tripspackage;
+syntax = "proto3";
+
+message FeedHeader{
+    string gtfsRealtimeVersion = 1;
+    int32 incrementality = 2;
+    int64 timestamp = 3;
+}
+
+message FeedMessage {
+    required FeedHeader header = 1;
+    repeated FeedEntity entity = 2;
+}
+  
+message FeedEntity {
+    required string id = 1;
+    optional TripUpdate tripUpdate = 2;
+}
+
+message StopTimeEvent {
+    optional int32 delay = 1;
+    optional int64 time = 2;
+}
+
+message StopTimeUpdate {
+
+    enum ScheduleRelationship{
+        ADDED = 0;
+        SCHEDULED = 3;
+        UNSCHEDULED = 2;
+        CANCELED = 1;  
+        SKIPPED = 4;
+    }
+
+    optional uint32 stopSequence = 1;
+    optional string stopId = 4;
+    optional StopTimeEvent arrival = 2;
+    optional StopTimeEvent departure = 3;
+    optional ScheduleRelationship scheduleRelationship = 5 [default = SCHEDULED];
+}
+
+message TripUpdate {
+    required TripDescriptor trip = 1;
+    repeated StopTimeUpdate stopTimeUpdate = 2;
+}
+  
+message TripDescriptor {
+
+    enum ScheduleRelationship{
+        ADDED = 0;
+        SCHEDULED = 3;
+        UNSCHEDULED = 2;
+        CANCELED = 1; 
+        SKIPPED = 4; 
+    }
+
+    optional string tripId = 1;
+    optional string routeId = 5;
+    optional uint32 directionId = 6;
+    optional string startTime = 2;
+    optional string startDate = 3;
+    optional ScheduleRelationship scheduleRelationship = 7 [default = SCHEDULED];
+        
+}
+  

@@ -2,35 +2,23 @@
 import {
     Body,
     Controller,
-    Get,
-    Param,
-    ParseIntPipe,
     Post,
-    UsePipes,
-    ValidationPipe,
+    Header
     } from '@nestjs/common';
-import { CreateUserDto } from '../dto/user.dto';
+import { DataService } from 'src/transit/services/data.service';
 import { UserService } from '../services/user.service';
 
-    
-@Controller('users')
-export class UsersController {
 
-    constructor(private userService: UserService) {}
-      
-    @Get()
-    public getUsers() {
-        return this.userService.getUsers();
+@Controller('bookings')
+export class UserController {
+
+    constructor(private data: DataService) {}
+
+    @Header('Content-Type', 'application/json')
+    @Post('/new')
+    public async login(@Body() data: any): Promise<any> {
+        this.data.booking.insertBooking(data);
+        return {msg: 'ok'};
     }
-      
-    @Get('id/:id')
-    public findUsersById(@Param('id', ParseIntPipe) id: number) {
-        return this.userService.findUsersById(id);
-    }
-      
-    @Post('create')
-    @UsePipes(ValidationPipe)
-    public createUsers(@Body() createUserDto: CreateUserDto) {
-        return this.userService.createUser(createUserDto);
-    }
+
 }

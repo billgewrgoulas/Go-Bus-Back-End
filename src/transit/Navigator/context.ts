@@ -1,7 +1,7 @@
 import { HttpService } from "@nestjs/axios";
 import { TripState } from "src/transit/transitDtos/trip.state";
 import { Repository } from "typeorm";
-import { IGenericRepository } from "../repositories/generic.repository";
+import { IGenericRepository } from "../../repositories/generic.repository";
 import { NavigatorStrategy } from "./navigatorStrategy";
 
 export class Context<T>{

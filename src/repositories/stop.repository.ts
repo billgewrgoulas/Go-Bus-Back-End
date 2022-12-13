@@ -1,6 +1,6 @@
 import { InjectDataSource, InjectRepository } from "@nestjs/typeorm";
 import { DataSource, Repository, UpdateResult } from "typeorm";
-import { Stop } from "../entities/stop.entity";
+import { Stop } from "../transit/entities/stop.entity";
 import { IGenericRepository } from "./generic.repository";
 
 export class StopRepository extends IGenericRepository<Stop>{

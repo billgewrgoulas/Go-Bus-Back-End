@@ -12,4 +12,8 @@ export const DBconnectionProperties: TypeOrmModuleOptions = {
     synchronize: true,
     autoLoadEntities: true,
     schema: process.env.DB_SCHEMA
-}
+};
+
+export const jwtConstants = {
+    secret: process.env.AUTH_KEY,
+};

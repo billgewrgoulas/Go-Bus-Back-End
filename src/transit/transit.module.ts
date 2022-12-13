@@ -17,27 +17,34 @@ import { RouteService } from './services/routes.service';
 import { PointService } from './services/points.service';
 import { ScheduleService } from './services/schedule.service';
 import { StopService } from './services/stop.service';
-import { Repository } from 'typeorm';
-import { IGenericRepository } from './repositories/generic.repository';
-import { LineRepository } from './repositories/line.repository';
-import { RouteRepository } from './repositories/route.repository';
-import { PointRepository } from './repositories/point.repository';
-import { ScheduleRepository } from './repositories/schedule.repository';
-import { StopRepository } from './repositories/stop.repository';
+import { LineRepository } from '../repositories/line.repository';
+import { RouteRepository } from '../repositories/route.repository';
+import { PointRepository } from '../repositories/point.repository';
+import { ScheduleRepository } from '../repositories/schedule.repository';
+import { StopRepository } from '../repositories/stop.repository';
 import { Context } from './Navigator/context';
-import { OTPService } from './services/otp.service';
+import { DataService } from './services/data.service';
+import { Booking, Trip, TripStatus } from './entities/tripStatus';
+import { BookingRepository } from 'src/repositories/booking.repository';
+import { BookingService } from './services/booking.service';
+import { TripRepository } from 'src/repositories/trip.repository';
+import { TripService } from './services/trip.service';
+import { TripStatusService } from './services/tripStatus.service';
+import { TripStatusRepository } from 'src/repositories/tripStatus.repository';
 
 
 @Module({
     imports: [
-        TypeOrmModule.forFeature([Line, Route, Point, Stop, RouteStop, Schedule]), 
+        TypeOrmModule.forFeature([Line, Route, Point, Stop, RouteStop, Schedule, Trip, Booking, TripStatus]), 
         HttpModule
     ],
     providers: [
-        DBUpdateService, LiveUpdatesService, LineService, RouteService,
-        PointService, ScheduleService, StopService, Context,
+        DBUpdateService, LiveUpdatesService, LineService, RouteService, DataService,
+        PointService, ScheduleService, StopService, Context, BookingRepository, BookingService, 
+        TripRepository, TripService, TripStatusService, TripStatusRepository,
         LineRepository, RouteRepository, PointRepository, ScheduleRepository, StopRepository
     ],
-    controllers: [TransitController, DBupdateController, LiveUpdatesController]
+    controllers: [TransitController, DBupdateController, LiveUpdatesController],
+    exports: [DataService]
 })
 export class TransitModule {}

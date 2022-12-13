@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { lastValueFrom, of } from 'rxjs';
+import { FeedMessage, PositionProto } from '../proto/position';
+import { Interval } from '@nestjs/schedule';
 
 @Injectable()
 export class LiveUpdatesService {
@@ -14,8 +16,10 @@ export class LiveUpdatesService {
         const action: string = slug + code;
         return await lastValueFrom(this.http.get(this.uri + action, {withCredentials: false, headers:{
             Authorization: 'Bearer ' + this.token,
-        }})).catch(e => console.log(e.response.status));
+        }})).catch(e => console.log('error while fetching the live data'));
     }
+
+
 
 }
 

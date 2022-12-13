@@ -1,7 +1,7 @@
 import { InjectDataSource, InjectRepository } from "@nestjs/typeorm";
 import { DataSource, Repository, UpdateResult } from "typeorm";
-import { Point } from "../entities/point.entity";
-import { Route } from "../entities/route.entity";
+import { Point } from "../transit/entities/point.entity";
+import { Route } from "../transit/entities/route.entity";
 import { IGenericRepository } from "./generic.repository";
 
 export class RouteRepository extends IGenericRepository<Route>{

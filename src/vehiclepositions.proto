@@ -1,0 +1,50 @@
+package vehiclepositionpackage;
+syntax = "proto3";
+
+message FeedHeader{
+    string gtfsRealtimeVersion = 1;
+    int32 incrementality = 2;
+}
+
+message TripDescriptor{
+    string tripId = 1;
+    string startDate = 2;
+    string routeId = 3;
+    int32 directionId = 4;
+}
+
+message Position{
+    float latitude = 1;
+    float longitude = 2;
+}
+
+message VehiclePosition{
+    int32 currentStopSequence = 1;
+    string stopId = 2;
+    int32 occupancyStatus = 3;
+    TripDescriptor trip = 4;
+    Position position = 5;
+    Long timestamp = 6;
+    VehicleDescriptor vehicle = 7;
+}
+
+message Long{
+    int64 low = 1;
+    int64 high = 2;
+    bool unsigned = 3;
+}
+
+message VehicleDescriptor{
+    string id = 1;
+    string label = 2;
+}
+
+message FeedEntity{
+    string id = 1;
+    VehiclePosition vehicle = 2;
+}
+
+message FeedMessage{
+    FeedHeader header = 1;
+    repeated FeedEntity entity = 2;
+}

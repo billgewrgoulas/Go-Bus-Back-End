@@ -1,0 +1,13 @@
+package userpackage;
+syntax = "proto3";
+
+message FeedHeader {
+  string gtfsRealtimeVersion = 1;
+}
+
+message position {
+  string latitude = 9;
+  string longitude = 10;
+  FeedHeader header = 11;
+}
+

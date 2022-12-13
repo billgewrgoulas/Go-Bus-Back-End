@@ -1,18 +1,26 @@
 import { Injectable } from '@nestjs/common';
 import { Schedule } from '../entities/schedule.entity';
-import { ScheduleRepository } from '../repositories/schedule.repository';
+import { ScheduleRepository } from '../../repositories/schedule.repository';
 
 @Injectable()
 export class ScheduleService {
 
     constructor(private repo: ScheduleRepository) {}
 
-    public async getRouteSchedules(routeCode: string): Promise<Schedule[]>{
+    public getRouteSchedules(routeCode: string): Promise<Schedule[]>{
         return this.repo.get(routeCode);
     }
 
-    public async insertTrips(trips: Schedule[]): Promise<any>{
+    public insertTrips(trips: Schedule[]): Promise<any>{
         return this.repo.insert(trips);
+    }
+
+    public getTrips(routeCode: string, day: number, stopCode: string): Promise<Schedule[]>{
+        return this.repo.getTrip(day, routeCode, stopCode);
+    }
+
+    public getAll(): Promise<Schedule[]>{
+        return this.repo.getAll();
     }
 
 }
