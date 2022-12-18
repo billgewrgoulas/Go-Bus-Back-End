@@ -20,6 +20,10 @@ export class OTPStrategy implements NavigatorStrategy<Route>{
         const itineraries: Itinerary[] = [];
         for (const it of plan.itineraries) {
 
+            if(it.transitTime == 0){
+                continue;
+            }
+
             const legs: Leg[] = [];
             for(const leg of it.legs){
 
@@ -39,10 +43,7 @@ export class OTPStrategy implements NavigatorStrategy<Route>{
 
             itineraries.push(new Itinerary(it, legs));
         }
-
-        const it = itineraries.shift();
-        itineraries.push(it);
-
+        
         const new_plan: Plan = new Plan(plan, itineraries, queryString);        
         new_plan.itineraries.forEach(it => it.legs.forEach(leg => leg.setFlexGrow(it.duration)));
 

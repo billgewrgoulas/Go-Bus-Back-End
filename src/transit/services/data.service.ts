@@ -7,6 +7,7 @@ import { ScheduleService } from "./schedule.service";
 import { StopService } from "./stop.service";
 import { TripService } from "./trip.service";
 import { TripStatusService } from "./tripStatus.service";
+import { OTPService } from "./otp.service";
 
 @Injectable()
 export class DataService{
@@ -14,12 +15,13 @@ export class DataService{
     constructor(
         private linesService: LineService,
         private routesService: RouteService,
-        private stopsSerrvice: StopService,
+        private stopsService: StopService,
         private schSerivce: ScheduleService,
         private pointService: PointService,
         private bookingService: BookingService,
         private tripService: TripService,
-        private tripStatusService: TripStatusService
+        private tripStatusService: TripStatusService,
+        private otpService: OTPService
     ){}
 
     public get lines(): LineService{
@@ -31,7 +33,7 @@ export class DataService{
     }
 
     public get stops(): StopService{
-        return this.stopsSerrvice;
+        return this.stopsService;
     }
 
     public get schedule(): ScheduleService{
@@ -52,6 +54,10 @@ export class DataService{
 
     public get tripStatus(): TripStatusService{
         return this.tripStatusService;
+    }
+
+    public get otp(): OTPService{
+        return this.otpService;
     }
 
 }

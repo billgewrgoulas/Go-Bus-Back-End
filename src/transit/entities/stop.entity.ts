@@ -22,4 +22,7 @@ export class Stop{
     @Column({nullable: false, type: 'varchar'})
     public desc: string;
 
+    @Column('simple-array', {nullable: true})
+    public lines: string[];
+
 }

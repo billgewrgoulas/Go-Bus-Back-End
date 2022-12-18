@@ -7,7 +7,10 @@ import { IGenericRepository } from "./generic.repository";
 @Injectable()
 export class LineRepository extends IGenericRepository<Line>{
 
-    public constructor(@InjectRepository(Line) lineRepo: Repository<Line>){
+    constructor(
+        @InjectRepository(Line) lineRepo: Repository<Line>, 
+        @InjectDataSource() db: DataSource
+    ){
         super(lineRepo);
     }
 

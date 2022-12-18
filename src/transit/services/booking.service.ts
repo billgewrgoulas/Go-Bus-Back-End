@@ -18,6 +18,10 @@ export class BookingService {
         return this.repo.get(email);
     }
 
+    public async deleteBooking(email: string, trip_id: number, start: string, end: string){
+        return this.repo.delete(email, trip_id)
+    }
+
     public async insertBooking(bookings: Booking[]): Promise<any>{
 
         let msg = {status: true};
@@ -51,21 +55,12 @@ export class BookingService {
                 this.tripRepo.updateEmbarkation(booking.trip_id, booking.startStop, 1);
                 this.tripRepo.updateDebarkation(booking.trip_id, booking.endStop, 1);
 
-                const stopCodes: string[] = (await this.tripRepo.get(booking.trip_id)).map(v => v.stopCode);  
-                const startIndex: number = stopCodes.indexOf(booking.startStop);
-                const endIndex: number = stopCodes.indexOf(booking.endStop);
-                const stops: string[] = stopCodes.slice(startIndex, endIndex);
-
-                this.tripRepo.updateOccupation(stops, 1, booking.trip_id);
+                this.tripRepo.updateOccupation(booking.stopCodes, 1, booking.trip_id);
             }
             
         }
 
         return msg;
-    }
-
-    public async deleteBooking(email: string, trip_id: number){
-        return this.repo.delete(email, trip_id)
     }
 
 }

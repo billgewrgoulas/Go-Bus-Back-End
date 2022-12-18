@@ -31,6 +31,8 @@ export class Booking{
     @JoinColumn({referencedColumnName: 'email', name: 'user_id'})
     public user: User;
 
+    public stopCodes: string[];
+
 }
 
 @Entity()

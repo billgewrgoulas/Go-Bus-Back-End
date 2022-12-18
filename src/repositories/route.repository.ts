@@ -6,7 +6,7 @@ import { IGenericRepository } from "./generic.repository";
 
 export class RouteRepository extends IGenericRepository<Route>{
 
-    public constructor(
+    constructor(
         @InjectRepository(Route) routeRepo: Repository<Route>,
         @InjectDataSource() dataSource: DataSource
     ){
@@ -21,10 +21,24 @@ export class RouteRepository extends IGenericRepository<Route>{
         return super.get({lineId: lineId});
     }
 
+    public async getStopRoutes(stopCode: string): Promise<Route[]>{
+        return this.db.query(`
+            SELECT r."code", r."lineId", r."direction", r."desc", r."desc_eng", r."stopCodes", l."name"
+            FROM transit_data.route AS r
+            INNER JOIN transit_data.line AS l
+            ON r."lineId"=l."id"
+            WHERE r."code" IN(
+                SELECT DISTINCT "routeCode"
+                FROM transit_data.route_stop AS rs
+                WHERE rs."stopCode"='${stopCode}'
+            );
+        `).catch(e => console.log(e));
+    }
+
     public async getRoutesBystops(start: string, end: string): Promise<Route[]>{
         return this.db.query(`
             SELECT *
-            FROM transit_data.route as r
+            FROM transit_data.route AS r
             WHERE r."code" IN(
                 SELECT DISTINCT "routeCode"
                 FROM transit_data.route_stop AS rs

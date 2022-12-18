@@ -158,7 +158,6 @@ export class Itinerary{
 export class Plan{
 
     public date: string;
-    public arrival: string;
     public from: Vertex;
     public to: Vertex;
     public slug: String;

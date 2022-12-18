@@ -140,6 +140,29 @@ export class DBupdateController {
         return 'ok';
     }
 
+    @Get('/stopLines')
+    public async stopLines(): Promise<any>{
+
+        const stops: any[] = await this.data.stops.getStopLines();
+        const dict = {};
+
+        for (const stop of stops) {
+            if(dict[stop.code]){
+                dict[stop.code].push(stop.name);
+            }else{
+                dict[stop.code] = [stop.name];
+            }
+        }
+
+        for (const key in dict) {
+            this.data.stops.updateStopLines(dict[key], key);
+        }
+
+        return 'ok';
+        
+    }
+
+
     private sleep(duration: number): Promise<void>{
         return new Promise((resolve) => setTimeout(resolve, duration));
     }

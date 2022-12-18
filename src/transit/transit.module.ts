@@ -31,6 +31,7 @@ import { TripRepository } from 'src/repositories/trip.repository';
 import { TripService } from './services/trip.service';
 import { TripStatusService } from './services/tripStatus.service';
 import { TripStatusRepository } from 'src/repositories/tripStatus.repository';
+import { OTPService } from './services/otp.service';
 
 
 @Module({
@@ -39,7 +40,7 @@ import { TripStatusRepository } from 'src/repositories/tripStatus.repository';
         HttpModule
     ],
     providers: [
-        DBUpdateService, LiveUpdatesService, LineService, RouteService, DataService,
+        DBUpdateService, LiveUpdatesService, LineService, RouteService, DataService, OTPService,
         PointService, ScheduleService, StopService, Context, BookingRepository, BookingService, 
         TripRepository, TripService, TripStatusService, TripStatusRepository,
         LineRepository, RouteRepository, PointRepository, ScheduleRepository, StopRepository

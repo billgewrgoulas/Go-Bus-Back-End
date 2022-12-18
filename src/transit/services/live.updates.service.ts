@@ -7,7 +7,7 @@ import { Interval } from '@nestjs/schedule';
 @Injectable()
 export class LiveUpdatesService {
 
-    private readonly token: string = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2Njk5Mjg3Njd9.90CAjQ-07oMEIViYya4n7ct7eloiHbqLmtF-iD67_VU';
+    private readonly token: string = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NzEzNzA5OTR9.6Ash7mnx7kflUiyl8F26dyKJ5QcLyNv9n9qICAm37Zc';
     private readonly uri: string = 'https://rest.citybus.gr/api/v1/el/106/';
     
     constructor(private http: HttpService){}

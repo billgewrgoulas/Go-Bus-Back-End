@@ -15,4 +15,12 @@ export class StopService {
         return this.repo.getRouteStops(routeCode);
     }
 
+    public async getStopLines(): Promise<any[]>{
+        return this.repo.getStopLines();
+    }
+    
+    public updateStopLines(lines: string[], code: string){
+        this.repo.updateStopLines(code, lines);
+    }
+
 }

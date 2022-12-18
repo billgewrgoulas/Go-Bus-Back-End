@@ -55,8 +55,14 @@ export class TransitController {
 
     @Post('/getPaths')
     @Header('Content-Type', 'application/json')
-    public getTrips(@Body() data: any): Promise<Route[] | Plan>{
-        return this.data.routes.getCustomPath(data.data);
+    public getTrips(@Body() data: any): Promise<Plan>{
+        return this.data.otp.getPlan(data.data);
+    }
+
+    @Get('/stopRoutes/:code')
+    @Header('Content-Type', 'application/json')
+    public getStopRoutes(@Param('code') code: string): Promise<Route[]>{
+        return this.data.routes.getStopRoutes(code);
     }
 
 }
