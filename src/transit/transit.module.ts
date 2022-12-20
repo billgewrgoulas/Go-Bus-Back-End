@@ -41,7 +41,7 @@ import { OTPService } from './services/otp.service';
     ],
     providers: [
         DBUpdateService, LiveUpdatesService, LineService, RouteService, DataService, OTPService,
-        PointService, ScheduleService, StopService, Context, BookingRepository, BookingService, 
+        PointService, ScheduleService, StopService, BookingRepository, BookingService, 
         TripRepository, TripService, TripStatusService, TripStatusRepository,
         LineRepository, RouteRepository, PointRepository, ScheduleRepository, StopRepository
     ],

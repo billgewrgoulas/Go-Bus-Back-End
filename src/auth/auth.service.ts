@@ -1,4 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import { HttpStatus } from '@nestjs/common/enums';
+import { HttpException } from '@nestjs/common/exceptions';
 import { JwtService } from '@nestjs/jwt';
 import { User } from 'src/user/entities/user.entity';
 import { UserService } from 'src/user/services/user.service';
@@ -13,12 +15,12 @@ export class AuthService {
     const user: User | void = await this.usersService.findUserByEmail(email);
 
     if(user && user.password != pass){
-      return {msg: 'wrong password'};
+      this.throwError('wrong password');
     }else if(user && user.password === pass){
       return user;
     }
 
-    return null;
+    this.throwError('wrong credentials')
   }
 
   public login(user: any) {
@@ -29,5 +31,11 @@ export class AuthService {
 
     const payload = { email: user.email, name: user.name };
     return { access_token: this.jwtService.sign(payload) };
+  }
+
+  public throwError(msg: string){
+    throw new HttpException({
+      status: HttpStatus.FORBIDDEN, error: msg
+    }, HttpStatus.FORBIDDEN);
   }
 }

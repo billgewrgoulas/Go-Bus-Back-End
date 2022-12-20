@@ -13,7 +13,7 @@ export class TripStatusRepository extends IGenericRepository<TripStatus>{
 
     public updateOccupation(trip_id: number, value: number){
         const spec: any = {trip_id: trip_id};
-        const update: any = {occupied: () => `embarkation + ${value}`};
+        const update: any = {occupied: () => `occupied + ${value}`};
         super.updateOne(spec, update);
     }
 
@@ -23,6 +23,15 @@ export class TripStatusRepository extends IGenericRepository<TripStatus>{
 
     public override insert(data: TripStatus[]): Promise<void | UpdateResult> {
         return super.insert(data);
+    }
+
+    public override async get(trip_ids: number[]): Promise<TripStatus[]>{
+        return this.entityRepository
+            .createQueryBuilder()
+            .select(['*'])
+            .where("trip_id IN (:...ids)", { ids: trip_ids })
+            .execute()
+            .catch(e => console.log(e));
     }
 
 }

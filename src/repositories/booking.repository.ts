@@ -16,16 +16,16 @@ export class BookingRepository extends IGenericRepository<Booking>{
         return super.get({user_id: email});
     }
 
-    public search(trip_id: number, user_id: string, startStop: string, endStop: string): Promise<Booking | void>{
-        return super.getOne({trip_id: trip_id, user_id: user_id, startStop: startStop, endStop: endStop});
+    public search(trip_id: number, email: string, startStop: string, endStop: string): Promise<Booking | void>{
+        return super.getOne({trip_id: trip_id, user_id: email, startStop: startStop, endStop: endStop});
     }
 
-    public override insertOne(booking: Booking): Promise<any> {
+    public override insertOne(booking: Booking) {
         return super.insertOne(booking);
     }
 
-    public delete(email: string, trip_id: number): Promise<any> {
-        return super.deleteOne({user_id: email, trip_id: trip_id});
+    public delete(email: string, trip_id: number, startStop: string, endStop: string) {
+        return super.deleteOne({trip_id: trip_id, user_id: email, startStop: startStop, endStop: endStop});
     }
 
     public override insert(data: Booking[]): Promise<void | UpdateResult> {

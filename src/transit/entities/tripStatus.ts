@@ -24,6 +24,30 @@ export class Booking{
     @Column({nullable: false, type: 'int'})
     public it: number;
 
+    @Column({nullable: false, type: 'varchar'})
+    public start: string;
+
+    @Column({nullable: false, type: 'varchar'})
+    public end: string;
+
+    @Column({nullable: false, type: 'varchar'})
+    public route: string;
+
+    @Column({nullable: false, type: 'varchar'})
+    public travel: string;
+
+    @Column({nullable: false, type: 'varchar'})
+    public arrive: string;
+
+    @Column({nullable: false, type: 'varchar'})
+    public fromPlace: string;
+
+    @Column({nullable: false, type: 'varchar'})
+    public toPlace: string;
+
+    @Column({nullable: false, type: 'varchar'})
+    public arriveBy: string;
+
     @ManyToOne(() => User, (user: User) => user.bookings, {
         cascade: true, 
         nullable: false, 
@@ -36,6 +60,7 @@ export class Booking{
 }
 
 @Entity()
+@Index(['trip_id', 'stopCode'], {unique: false})
 export class Trip{
 
     @PrimaryColumn({nullable: false, type: 'bigint'})
@@ -50,7 +75,6 @@ export class Trip{
     @Column({nullable: false, type: 'varchar'})
     public tripTime: string;
 
-    /* Updates in real time */
     @Column({nullable: false, type: 'bigint'})
     public occupied: number;
 

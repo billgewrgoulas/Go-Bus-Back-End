@@ -9,4 +9,9 @@ export class CreateUserDto {
     @IsNotEmpty()
     @IsEmail()
     public email: string;
+
+    @IsNotEmpty()
+    @MinLength(2)
+    public name: string;
+    
 }

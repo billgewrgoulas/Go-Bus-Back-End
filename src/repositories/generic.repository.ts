@@ -26,16 +26,16 @@ export abstract class IGenericRepository<T extends QueryDeepPartialEntity<Object
 	}
 
 	protected async insert(data: T[]): Promise<void | UpdateResult>{
-		await this.entityRepository.save(data, {chunk: 1000}).catch(e => console.log(e));
+		this.entityRepository.save(data, {chunk: 1000}).catch(e => console.log(e));
 	}
 
-	protected async insertOne(data: T): Promise<void | UpdateResult>{
+	protected insertOne(data: T){
 		this.entityRepository
 			.createQueryBuilder()
 		  	.insert()
 		  	.values(data)
 		  	.execute()
-		  	.catch(e => console.log(e.detail));
+		  	.catch(e => console.log(e));
 	}
 
 	protected async getOne(spec: any): Promise<T | void>{
@@ -46,7 +46,7 @@ export abstract class IGenericRepository<T extends QueryDeepPartialEntity<Object
 			.catch(e => console.log(e.detail));
 	}
 
-	protected async deleteOne(spec: any): Promise<any>{
+	protected deleteOne(spec: any){
 		this.entityRepository
 			.createQueryBuilder()
 			.delete()
@@ -55,7 +55,7 @@ export abstract class IGenericRepository<T extends QueryDeepPartialEntity<Object
 			.catch(e => console.log(e.detail));
 	}
 
-	protected async updateOne(spec: any, update: any): Promise<any>{
+	protected updateOne(spec: any, update: any){
 		this.entityRepository
 			.createQueryBuilder()
 			.update()

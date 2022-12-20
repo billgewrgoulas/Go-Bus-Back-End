@@ -11,7 +11,6 @@ export class BookingService {
     constructor(
         private repo: BookingRepository, 
         private tripRepo: TripRepository,
-        private tripStatus: TripStatusRepository
     ) {}
 
     public async getBookings(email: string): Promise<Booking[]>{
@@ -19,7 +18,7 @@ export class BookingService {
     }
 
     public async deleteBooking(email: string, trip_id: number, start: string, end: string){
-        return this.repo.delete(email, trip_id)
+        return this.repo.delete(email, trip_id, start, end)
     }
 
     public async insertBooking(bookings: Booking[]): Promise<any>{
@@ -27,13 +26,12 @@ export class BookingService {
         let msg = {status: true};
 
         for (const booking of bookings) {
-
             const tripStatus: Trip | void = await this.tripRepo.getStatus(booking.trip_id, booking.startStop);
 
             if(tripStatus){
-                const totalOnBoard: number = tripStatus.occupied + tripStatus.embarkation - tripStatus.debarkation;
+                const totalOnBoard: number = +tripStatus.occupied + +tripStatus.embarkation - +tripStatus.debarkation;
 
-                if(totalOnBoard == tripStatus.totalSeats){
+                if(totalOnBoard > tripStatus.totalSeats){
                     msg = {status: false};
                     break;
                 }
@@ -44,18 +42,16 @@ export class BookingService {
         if(msg.status){
 
             for (const booking of bookings) {
-
                 const res = await this.repo.search(booking.trip_id, booking.user_id, booking.startStop, booking.endStop);
             
                 if(res){
                     continue;
                 }
 
-                await this.repo.insertOne(booking);
                 this.tripRepo.updateEmbarkation(booking.trip_id, booking.startStop, 1);
                 this.tripRepo.updateDebarkation(booking.trip_id, booking.endStop, 1);
-
                 this.tripRepo.updateOccupation(booking.stopCodes, 1, booking.trip_id);
+                this.repo.insertOne(booking);
             }
             
         }

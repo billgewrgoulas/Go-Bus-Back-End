@@ -1,15 +1,12 @@
+import { initialize } from "passport";
 
 export interface TripState {
     start: string[];
     destination: string[];
-    options: string[];
     direction: string;
     time: string;
     date: Date;
     arriveBy: string;
-    sortBy: string;
-    mode: string;
-    strategy: string;
     fetch: boolean;
 }
 
@@ -35,7 +32,6 @@ export class OTPParams{
         this.toPlace = `${init.destination[2]},${init.destination[3]}`;
         this.date = this.apiDateFormat(init.date);
         this.time = init.time;
-        this.mode = init.mode;
 
         if(init.arriveBy == 'depart'){
             this.arriveBy = false;

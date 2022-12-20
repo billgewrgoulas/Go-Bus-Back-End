@@ -8,8 +8,8 @@ export class UserService {
 
     constructor(private repo: UserRepository) {}
 
-    public createUser(user: User): Promise<void | UpdateResult> {
-        return this.repo.insertOne(user);
+    public createUser(user: User) {
+        this.repo.insertOne(user);
     }
          
     public findUserByEmail(email: string): Promise<User | void> {

@@ -16,7 +16,7 @@ export class UserRepository extends IGenericRepository<User>{
         return super.getOne({email: email});
     }
 
-    public override insertOne(data: User): Promise<void | UpdateResult> {
+    public override insertOne(data: User) {
         return super.insertOne(data);
     }
     

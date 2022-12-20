@@ -63,7 +63,7 @@ export class Leg{
     public mode: string;
     public steps: Step[];
     public routeId: string | undefined;
-    public tripId: string;
+    public tripId: string | undefined;
     public serviceDate: string;
     public agencyName: string;
     public agencyTimeZoneOffset: number;
@@ -86,7 +86,7 @@ export class Leg{
         this.transitTime = Math.floor(leg.transitTime/60);
         this.mode = leg.mode;
         this.routeId = this.setRoute(leg.routeId);
-        this.tripId = leg.tripId;
+        this.tripId = this.setTrip(leg.tripId);
         this.serviceDate = leg.serviceDate;
         this.agencyName = leg.agencyName;
         this.agencyTimeZoneOffset = leg.agencyTimeZoneOffset;
@@ -105,6 +105,14 @@ export class Leg{
     public setRoute(route: string){
         if(route){
             return route.split(":")[1];
+        }else{
+            return undefined;
+        }
+    }
+
+    public setTrip(trip_id: string | undefined){
+        if(trip_id){
+            return trip_id.split(":")[1];
         }else{
             return undefined;
         }
@@ -160,15 +168,17 @@ export class Plan{
     public date: string;
     public from: Vertex;
     public to: Vertex;
-    public slug: String;
+    public slug: string;
+    public arriveBy: string;
     public itineraries: Itinerary[];
 
-    constructor(plan: Plan, it: Itinerary[], slug: string){
+    constructor(plan: Plan, it: Itinerary[], slug: string, arriveBy: string){
         this.date = new Date(plan.date).toLocaleString();
         this.from = new Vertex(plan.from);
         this.to = new Vertex(plan.to);
         this.itineraries = it;
         this.slug = slug;
+        this.arriveBy = arriveBy;
     }
 
 }
