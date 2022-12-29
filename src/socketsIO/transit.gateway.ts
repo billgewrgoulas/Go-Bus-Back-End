@@ -7,25 +7,10 @@ export class TransitGateWay implements OnGatewayConnection{
 
     @WebSocketServer() private server: Server;
 
-    constructor(){
-    }
+    constructor(){}
 
-    @SubscribeMessage('update-arrivals')
-    public async updateAll(client: Socket, data: any){
-        
-    }
-
-    @SubscribeMessage('cancel-bus-updates')
-    public cancelBusUpdates(client: Socket){
-    }
-
-    @SubscribeMessage('start-bus-updates')
-    public startBusUpdates(client: Socket, data: any){
-    }
-
-    public async sendBusLocations(){
-
-       
+    public updateOccupancy(value: number, trip_ids: number[]){
+        this.server.emit('update', {value: value, trip_ids: trip_ids});
     }
 
     public handleConnection(client: Socket){

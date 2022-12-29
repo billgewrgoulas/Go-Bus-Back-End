@@ -64,5 +64,5 @@ export abstract class IGenericRepository<T extends QueryDeepPartialEntity<Object
 			.execute()
 			.catch(e => console.log(e.detail));
 	}
-
+	
 }

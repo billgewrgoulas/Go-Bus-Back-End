@@ -3,7 +3,7 @@ import { DBUpdateService } from '../services/db.update.service';
 import { Route } from '../entities/route.entity';
 import { Schedule } from '../entities/schedule.entity';
 import { DataService } from '../services/data.service';
-import { Trip, TripStatus } from '../entities/tripStatus';
+import { Trip } from '../entities/tripStatus';
 
 @Controller('update')
 export class DBupdateController {
@@ -117,27 +117,27 @@ export class DBupdateController {
     }
 
     @Get('/populateTripStatus')
-    public async populateStatuses(): Promise<string>{
-        const schedules: Schedule[] = await this.data.schedule.getAll();
+    public async populateStatuses(): Promise<any>{
+        // const schedules: Schedule[] = await this.data.schedule.getAll();
 
-        const trips: TripStatus[] = [];
-        const set = new Set<number>();
+        // const trips: TripStatus[] = [];
+        // const set = new Set<number>();
 
-        for (const sch of schedules) {
+        // for (const sch of schedules) {
 
-            if(!set.has(sch.trip_id)){
-                const trip: TripStatus = new TripStatus();
-                trip.occupied = 0;
-                trip.totalSeats = 30;
-                trip.trip_id = sch.trip_id;
-                trips.push(trip);
-                set.add(sch.trip_id);
-            }
+        //     if(!set.has(sch.trip_id)){
+        //         const trip: TripStatus = new TripStatus();
+        //         trip.occupied = 0;
+        //         trip.totalSeats = 30;
+        //         trip.trip_id = sch.trip_id;
+        //         trips.push(trip);
+        //         set.add(sch.trip_id);
+        //     }
 
-        }
+        // }
 
-        await this.data.tripStatus.insertDetails(trips);
-        return 'ok';
+        // await this.data.tripStatus.insertDetails(trips);
+        // return 'ok';
     }
 
     @Get('/stopLines')

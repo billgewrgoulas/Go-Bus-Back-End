@@ -6,7 +6,6 @@ import { RouteService } from "./routes.service";
 import { ScheduleService } from "./schedule.service";
 import { StopService } from "./stop.service";
 import { TripService } from "./trip.service";
-import { TripStatusService } from "./tripStatus.service";
 import { OTPService } from "./otp.service";
 
 @Injectable()
@@ -20,7 +19,6 @@ export class DataService{
         private pointService: PointService,
         private bookingService: BookingService,
         private tripService: TripService,
-        private tripStatusService: TripStatusService,
         private otpService: OTPService
     ){}
 
@@ -50,10 +48,6 @@ export class DataService{
 
     public get trips(): TripService{
         return this.tripService;
-    }
-
-    public get tripStatus(): TripStatusService{
-        return this.tripStatusService;
     }
 
     public get otp(): OTPService{

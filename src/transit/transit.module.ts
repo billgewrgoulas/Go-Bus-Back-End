@@ -24,26 +24,26 @@ import { ScheduleRepository } from '../repositories/schedule.repository';
 import { StopRepository } from '../repositories/stop.repository';
 import { Context } from './Navigator/context';
 import { DataService } from './services/data.service';
-import { Booking, Trip, TripStatus } from './entities/tripStatus';
+import { Booking, Trip } from './entities/tripStatus';
 import { BookingRepository } from 'src/repositories/booking.repository';
 import { BookingService } from './services/booking.service';
 import { TripRepository } from 'src/repositories/trip.repository';
 import { TripService } from './services/trip.service';
-import { TripStatusService } from './services/tripStatus.service';
-import { TripStatusRepository } from 'src/repositories/tripStatus.repository';
 import { OTPService } from './services/otp.service';
+import { TripUpdatesListener } from './listeners/trips.update.listener';
+import { TransitGateWay } from 'src/socketsIO/transit.gateway';
 
 
 @Module({
     imports: [
-        TypeOrmModule.forFeature([Line, Route, Point, Stop, RouteStop, Schedule, Trip, Booking, TripStatus]), 
+        TypeOrmModule.forFeature([Line, Route, Point, Stop, RouteStop, Schedule, Trip, Booking]), 
         HttpModule
     ],
     providers: [
         DBUpdateService, LiveUpdatesService, LineService, RouteService, DataService, OTPService,
         PointService, ScheduleService, StopService, BookingRepository, BookingService, 
-        TripRepository, TripService, TripStatusService, TripStatusRepository,
-        LineRepository, RouteRepository, PointRepository, ScheduleRepository, StopRepository
+        TripRepository, TripService, LineRepository, RouteRepository, PointRepository, ScheduleRepository, StopRepository,
+        TripUpdatesListener, TransitGateWay
     ],
     controllers: [TransitController, DBupdateController, LiveUpdatesController],
     exports: [DataService]

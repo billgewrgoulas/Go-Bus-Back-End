@@ -7,11 +7,13 @@ import { TransitModule } from './transit/transit.module';
 import { TransitGateWay } from './socketsIO/transit.gateway';
 import { AuthModule } from './auth/auth.module';
 import { AppController } from './app.controller';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 
 
 @Module({
   imports: [
+    EventEmitterModule.forRoot(),
     AuthModule,
     UserModule,
     TransitModule,
@@ -21,7 +23,7 @@ import { AppController } from './app.controller';
     }),
   ],
   controllers: [AppController],
-  providers: [TransitGateWay],
+  providers: [],
 })
 export class AppModule {
   

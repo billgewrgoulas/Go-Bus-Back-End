@@ -16,8 +16,8 @@ export class BookingRepository extends IGenericRepository<Booking>{
         return super.get({user_id: email});
     }
 
-    public search(trip_id: number, email: string, startStop: string, endStop: string): Promise<Booking | void>{
-        return super.getOne({trip_id: trip_id, user_id: email, startStop: startStop, endStop: endStop});
+    public search(trip_id: number, email: string): Promise<Booking | void>{
+        return super.getOne({trip_id: trip_id, user_id: email});
     }
 
     public override insertOne(booking: Booking) {

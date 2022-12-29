@@ -4,17 +4,9 @@ import { User } from '../entities/user.entity';
 import { UserStop } from '../entities/userStop.entity';
 
 @Injectable()
-export class UserService {
+export class SavedService {
 
     constructor(private repo: UserRepository) {}
-
-    public createUser(user: User) {
-        this.repo.insertOne(user);
-    }
-         
-    public findUserByEmail(email: string): Promise<User | void> {
-        return this.repo.getOne(email);
-    }
 
     public insertStop(code: string, user: string){
         this.repo.insertStop(code, user);

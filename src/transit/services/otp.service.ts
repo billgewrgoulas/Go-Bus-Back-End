@@ -1,11 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
-import { lastValueFrom, of } from 'rxjs';
+import { lastValueFrom } from 'rxjs';
 import { OTPParams, TripState } from '../transitDtos/trip.state';
 import { Itinerary, Leg, Plan, Step, Vertex } from '../transitDtos/itinerary.dto';
-import { Trip, TripStatus } from '../entities/tripStatus';
-import { DataService } from './data.service';
-import { TripStatusRepository } from 'src/repositories/tripStatus.repository';
+import { Booking, Trip } from '../entities/tripStatus';
 import { TripRepository } from 'src/repositories/trip.repository';
 
 @Injectable()
@@ -19,17 +17,48 @@ export class OTPService {
         return lastValueFrom(this.http.get(this.uri + slug)).catch(e => console.log(e));
     }
 
+    public async getBookingPlan(booking: Booking): Promise<Plan>{
+
+        const { data } = await this.getTrips(booking.slug);
+        const plan: Plan = <Plan>data.plan;
+        const new_plan: Plan = await this.planBuilder(plan, '');
+        const itineraries: Itinerary[] = [];
+        const legs: Leg[] = [];
+
+        new_plan.itineraries.forEach(it => {
+            it.legs.forEach(leg => {
+                if( leg.mode == 'TRAM' && 
+                    +leg.tripId == booking.trip_id && 
+                    leg.from.stopCode == booking.startStop &&
+                    leg.to.stopCode == booking.endStop
+                ){
+                    legs.push(leg);
+                    itineraries.push(it);
+                }
+            });
+            it.legs = legs;
+        });
+        
+        new_plan.itineraries = itineraries;
+        return new_plan;
+    }
+
     public async getPlan(state: TripState): Promise<Plan>{
 
         const otpParams: OTPParams = new OTPParams(state);
         const queryString: string = otpParams.buildQueryParams();
+        const { data } = await <any>this.getTrips(queryString);
+        const plan: Plan = <Plan>data.plan;
+        
+        return this.planBuilder(plan, queryString);
+    }
+
+    private async planBuilder(plan: Plan, slug: string): Promise<Plan>{
+
         const itineraries: Itinerary[] = [];
         const trip_ids: any[] = [];
         const stopCodes: string[] = [];
 
-        const { data } = await <any>this.getTrips(queryString);
-        const plan: Plan = <Plan>data.plan;
-        
         for (const it of plan.itineraries) {
 
             if(it.transitTime == 0){
@@ -59,8 +88,9 @@ export class OTPService {
             itineraries.push(new Itinerary(it, legs));
         }
 
-        const new_plan: Plan = new Plan(plan, itineraries, queryString, state.arriveBy);   
-        const trips: Trip[] = await this.tripRepo.getOccupation(trip_ids, stopCodes);     
+        const new_plan: Plan = new Plan(plan, itineraries, slug);   
+        const trips: Trip[] = await this.tripRepo.getOccupation(trip_ids, stopCodes);  
+        const occupancy: any = {};   
 
         new_plan.itineraries.forEach(it => {
             it.legs.forEach(leg => {
@@ -69,12 +99,13 @@ export class OTPService {
                 
                 if(leg.mode == 'TRAM'){
                     const occupation: number = trips.find(t => t.trip_id == +leg.tripId).occupied;
-                    leg.occupancyStatus = 30 - occupation;
+                    occupancy[leg.tripId] = 30 - occupation;
                 }
 
             });
         });
 
+        new_plan.occupancy = occupancy;
         return new_plan;
     }
 

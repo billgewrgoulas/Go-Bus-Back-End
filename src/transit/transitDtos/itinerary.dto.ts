@@ -168,17 +168,17 @@ export class Plan{
     public date: string;
     public from: Vertex;
     public to: Vertex;
-    public slug: string;
     public arriveBy: string;
     public itineraries: Itinerary[];
+    public slug: string;
+    public occupancy: any;
 
-    constructor(plan: Plan, it: Itinerary[], slug: string, arriveBy: string){
+    constructor(plan: Plan, it: Itinerary[], slug: string){
         this.date = new Date(plan.date).toLocaleString();
         this.from = new Vertex(plan.from);
         this.to = new Vertex(plan.to);
         this.itineraries = it;
         this.slug = slug;
-        this.arriveBy = arriveBy;
     }
 
 }

@@ -1,7 +1,9 @@
 
 import { IsNotEmpty, MinLength } from 'class-validator';
+import { Line } from 'src/transit/entities/line.entity';
+import { Stop } from 'src/transit/entities/stop.entity';
 import { Booking } from 'src/transit/entities/tripStatus';
-import { Column, Entity, PrimaryGeneratedColumn, OneToMany, PrimaryColumn, Index} from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, OneToMany, PrimaryColumn, Index, ManyToMany, JoinTable} from 'typeorm';
 
 @Entity()
 export class User {
