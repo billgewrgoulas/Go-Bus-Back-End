@@ -14,11 +14,33 @@ export class StopRepository extends IGenericRepository<Stop>{
         return super.getAll();
     }
 
+    public override async get(spec: any): Promise<Stop[]>{
+        return super.get(spec);
+    }
+
+    public override async insert(stops: Stop[]): Promise<void>{
+        super.insert(stops);
+    }
+
+    public override async getOne(spec: any): Promise<void | Stop> {
+        return super.getOne(spec);
+    }
+
+    public async getSaved(user: string): Promise<Stop[]>{
+        return this.db.query(`
+            SELECT s."id", s."code", s."latitude", s."longitude", s."desc", s."desc_eng", s."lines"
+            FROM transit_data.user_stop AS us
+            INNER JOIN transit_data.stop AS s
+            ON s."code"=us."stop_code"
+            WHERE us."user_id"='${user}';
+        `).catch(e => console.log(e));
+    }
+
     public async getRouteStops(code: string): Promise<Stop[]>{
         return this.db.query(`
             SELECT "desc", "desc_eng", "code", "latitude", "longitude"
-            FROM transit_data.route_stop as rs
-            INNER JOIN transit_data.stop as s 
+            FROM transit_data.route_stop AS rs
+            INNER JOIN transit_data.stop AS s 
             ON s."code"=rs."stopCode"
             WHERE rs."routeCode"='${code}';
         `).catch(e => console.log(e));

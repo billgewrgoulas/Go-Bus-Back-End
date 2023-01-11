@@ -17,8 +17,36 @@ export class RouteRepository extends IGenericRepository<Route>{
         return super.getAll();
     }
 
+    public override async get(spec: any): Promise<Route[]>{
+        return super.get(spec);
+    }
+
+    public override async insert(routes: Route[]): Promise<void>{
+        super.insert(routes);
+    }
+
+    public insertStops(codes: string[], routeCode: string){
+        super.updateOne({code: routeCode}, {stopCodes: codes});
+    }
+
+    public async getSaved(user: string): Promise<Route[]>{
+        return this.db.query(`
+            SELECT r."id", r."code", r."lineId", r."desc", r."desc_eng", r."stopCodes"
+            FROM transit_data.user_route AS ur
+            INNER JOIN transit_data.route AS r
+            ON r."code"=ur."route_code"
+            WHERE ur."user_id"='${user}';
+        `).catch(e => console.log(e));
+    }
+
     public async getRoutesByLineId(lineId: string): Promise<Route[]>{
-        return super.get({lineId: lineId});
+        return this.db.query(`
+            SELECT r."id", r."code", r."lineId", r."direction", r."desc", r."desc_eng", r."stopCodes", l."name"
+            FROM transit_data.route AS r
+            INNER JOIN transit_data.line AS l
+            ON r."lineId"=l."id"
+            WHERE r."lineId"='${lineId}';
+        `).catch(e => console.log(e));
     }
 
     public async getStopRoutes(stopCode: string): Promise<Route[]>{
@@ -50,6 +78,5 @@ export class RouteRepository extends IGenericRepository<Route>{
             );
         `).catch(e => console.log(e));
     }
-
 
 }

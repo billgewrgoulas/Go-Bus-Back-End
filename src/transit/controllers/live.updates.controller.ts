@@ -7,82 +7,21 @@ import {FeedEntity, VehicleDescriptor, VehiclePosition, Long, FeedHeader, FeedMe
 import Trip from '../proto/trips';
 import { ScheduleService } from '../services/schedule.service';
 import { DataService } from '../services/data.service';
+import { Interval } from '@nestjs/schedule';
+import { Stop } from '../entities/stop.entity';
+import { LiveData } from '../entities/live.data';
 var protobuf = require('protobufjs')
 
 
 @Controller('live')
 export class LiveUpdatesController {
 
-    private tripUpdates: Trip;
-
-    private header: FeedHeader = {
-        gtfsRealtimeVersion: '2.0',
-        incrimentality: 0,
-        timestamp: 1
-    }
-
-    private position: Position = {
-        latitude: 1, 
-        longitude: 2
-    }
-
-    private trip: TripDescriptor = {
-        tripId: '1',
-        startDate: '2',
-        routeId: '3',
-        directionId: 4
-    }
-
-    private timestamp: Long = {
-        low: 1, 
-        high: 2, 
-        unsigned: false
-    }
-
-    private vehicled: VehicleDescriptor = {
-        id: '2',
-        label: '4'
-    }
-
-    private vehicle: VehiclePosition = {
-        currentStopSequence: 1,
-        stopId: '2',
-        occupancyStatus: 3,
-        trip: this.trip,
-        position: this.position,
-        timestamp: this.timestamp,
-        vehicle: this.vehicled
-    }
-
-    private entity: FeedEntity = {
-        id: '1',
-        vehicle: this.vehicle
-    }
-
-    private message: FeedMessage = {
-        header: this.header,
-        entity: [this.entity]
-    }
-
-    constructor(private liveService: LiveUpdatesService, private data: DataService){
-        this.tripUpdates = new Trip(this.liveService, data);
-    }
+    constructor(private liveService: LiveUpdatesService, private data: DataService){}
 
     @Get('/stops/:code')
     @Header('Content-Type', 'application/json')
     public async getDepartures(@Param('code') code: string): Promise<ArrivalDto[]>{
-
-        const arrivalsPromise = <any>await this.liveService.getLiveData(code, 'stops/live/');
-        const arrivals: ArrivalDto[] = [];
-
-        if(arrivalsPromise && arrivalsPromise.data.vehicles){
-            for(const e of arrivalsPromise.data.vehicles){
-                const arrival = new ArrivalDto(e);
-                arrivals.push(arrival);
-            }
-        }
-        
-        return arrivals;
+        return this.liveService.liveDataBuilder(code);
     }
 
     @Get('/lines/:code')
@@ -102,16 +41,42 @@ export class LiveUpdatesController {
         return arrivals;
     }
 
-    @Get('/trips')
-    @Header('Content-Type', 'application/protobuf')
-    public async getStaticFile(@Res() response: Response): Promise<void> {
-        
-        const root = await protobuf.load("./src/transit/proto/trips.proto");
-        const testMessage = root.lookupType("tripspackage.FeedMessage");
-        const message = testMessage.create(this.tripUpdates.getMessage);
-        const encoded = testMessage.encode(message).finish();
+    // @Interval(30000)
+    public async saveLiveData(): Promise<void>{
 
-        response.send(encoded);
-    }  
+        const lineCodes: string[] = (await this.data.lines.getLines()).map(line => line.name);
+
+        for (const line of lineCodes) {
+            const buses: ArrivalDto[] = await this.getLineBuses(line);
+
+            for (const bus of buses) {
+
+                const stops: Stop[] = await this.data.stops.getRouteStops(bus.routeCode);
+                const prom: Promise<any>[] = stops.map(stop => this.liveService.liveDataBuilder(stop.code));
+                const res: any[] = await Promise.all(prom);
+                const liveData: LiveData[] = [];
+                
+                for (let i = 0; i < stops.length; i++) {
+
+                    for(let j = 0; j < res[i].length; j++){
+
+                        const data: LiveData = {...res[i][j]};
+                        data.stopCode = stops[i].code;
+                        data.stopLat = stops[i].latitude;
+                        data.stopLng = stops[i].longitude;
+                        data.vehicleLat = res[i][j].latitude;
+                        data.vehicleLng = res[i][j].longitude;
+
+                        if(+data.vehicleLat > 0 && +data.vehicleLng > 0){
+                            liveData.push(data);
+                        }
+                        
+                    }
+                }
+                
+                await this.data.live.insert(liveData);
+            }
+        }
+    }
 }
 

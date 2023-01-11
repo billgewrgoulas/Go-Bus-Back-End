@@ -32,18 +32,24 @@ import { TripService } from './services/trip.service';
 import { OTPService } from './services/otp.service';
 import { TripUpdatesListener } from './listeners/trips.update.listener';
 import { TransitGateWay } from 'src/socketsIO/transit.gateway';
+import { RouteStopRepository } from 'src/repositories/routeStop.repository';
+import { RouteStopService } from './services/routeStop.service';
+import { NewSchedule } from './entities/newSchedule.entity';
+import { NewScheduleService } from './services/newSchedule.service';
+import { LiveData } from './entities/live.data';
+import { LiveDataRepository } from 'src/repositories/liveData.repository';
 
 
 @Module({
     imports: [
-        TypeOrmModule.forFeature([Line, Route, Point, Stop, RouteStop, Schedule, Trip, Booking]), 
+        TypeOrmModule.forFeature([NewSchedule, Line, Route, Point, Stop, RouteStop, Schedule, Trip, Booking, LiveData]), 
         HttpModule
     ],
     providers: [
         DBUpdateService, LiveUpdatesService, LineService, RouteService, DataService, OTPService,
-        PointService, ScheduleService, StopService, BookingRepository, BookingService, 
+        PointService, ScheduleService, StopService, BookingRepository, BookingService, RouteStopRepository, RouteStopService,
         TripRepository, TripService, LineRepository, RouteRepository, PointRepository, ScheduleRepository, StopRepository,
-        TripUpdatesListener, TransitGateWay
+        TripUpdatesListener, TransitGateWay, NewScheduleService, LiveDataRepository
     ],
     controllers: [TransitController, DBupdateController, LiveUpdatesController],
     exports: [DataService]

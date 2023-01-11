@@ -27,8 +27,8 @@ export class TripRepository extends IGenericRepository<Trip>{
         return super.getOne({trip_id: trip_id});
     }
 
-    public override insert(data: Trip[]): Promise<void | UpdateResult> {
-        return super.insert(data);
+    public override async insert(data: Trip[]): Promise<void> {
+        super.insert(data);
     }
 
     public getStatus(trip_id: number, stop: string): Promise<Trip | void>{
@@ -79,6 +79,14 @@ export class TripRepository extends IGenericRepository<Trip>{
             WHERE trip."trip_id"=${trip_id}
             ORDER BY trip."tripTime";
         `).catch(e => console.log(e.detail));
+    }
+
+    public async getByDate(routeCode: string, day: number, stopCode: string): Promise<Trip[]> {
+        return this.db.query(`
+            SELECT *
+            FROM transit_data.trip AS t
+            WHERE t."day"=${day} AND t."routeCode"='${routeCode}' AND t."stopCode"='${stopCode}'
+        `).catch(e => console.log(e));
     }
 
 }

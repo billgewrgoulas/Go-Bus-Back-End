@@ -57,9 +57,6 @@ export class Trip{
     @PrimaryColumn({nullable: false, type: 'bigint'})
     public id: number;
 
-    @Column({nullable: false, type: 'varchar'})
-    public tripTime: string;
-
     @Column({nullable: false, type: 'bigint'})
     public occupied: number;
 
@@ -71,6 +68,9 @@ export class Trip{
 
     @Column({nullable: false, type: 'bigint'})
     public debarkation: number;
+
+    @Column({nullable: true, type: 'varchar'})
+    public routeCode: string;
 
 }
 

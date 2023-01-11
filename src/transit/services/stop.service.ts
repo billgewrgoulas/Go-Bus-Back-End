@@ -23,4 +23,20 @@ export class StopService {
         this.repo.updateStopLines(code, lines);
     }
 
+    public get(spec: any): Promise<Stop[]>{
+        return this.repo.get(spec);
+    }
+
+    public getSaved(user: string): Promise<Stop[]>{
+        return this.repo.getSaved(user);
+    }
+
+    public async insert(stops: Stop[]){
+        this.repo.insert(stops);
+    }
+
+    public getOne(code: string): Promise<Stop | void>{
+        return this.repo.getOne({code: code});
+    }
+
 }

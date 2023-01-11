@@ -5,7 +5,7 @@ import { lastValueFrom } from 'rxjs';
 @Injectable()
 export class DBUpdateService {
 
-    private token: string = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjkyMTMwNzF9.YA3uZOFBaFnAvrfHhOjA2wsfSqCRY0Qc6AIbx0VGmow';
+    private token: string = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NzM0MzMwNjN9.oviHabOmnHxFzHyykmeF5-W9pv5bT6UeP7vWwI-IzEY';
     private url: string = 'https://rest.citybus.gr/api/v1/el/106/';
 
     constructor(private http: HttpService){}
@@ -22,7 +22,13 @@ export class DBUpdateService {
         }})).catch(e => console.log(e.code));
     }
 
-    public async getRoutes(code: string){
+    public async getRoutes(){
+        return await lastValueFrom(this.http.get(this.url + 'routes', {withCredentials: false, headers:{
+            Authorization: 'Bearer ' + this.token,
+        }})).catch(e => console.log(e.code));
+    }
+
+    public async getRouteInfo(code: string){
         return await lastValueFrom(this.http.get(this.url + 'routes/' + code, {withCredentials: false, headers:{
             Authorization: 'Bearer ' + this.token,
         }})).catch(e => console.log(e.code));

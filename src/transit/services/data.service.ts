@@ -7,6 +7,11 @@ import { ScheduleService } from "./schedule.service";
 import { StopService } from "./stop.service";
 import { TripService } from "./trip.service";
 import { OTPService } from "./otp.service";
+import { RouteStopService } from "./routeStop.service";
+import { NewSchedule } from "../entities/newSchedule.entity";
+import { NewScheduleService } from "./newSchedule.service";
+import { Repository } from "typeorm";
+import { LiveDataRepository } from "src/repositories/liveData.repository";
 
 @Injectable()
 export class DataService{
@@ -19,7 +24,10 @@ export class DataService{
         private pointService: PointService,
         private bookingService: BookingService,
         private tripService: TripService,
-        private otpService: OTPService
+        private otpService: OTPService,
+        private rsService: RouteStopService,
+        public ns: NewScheduleService,
+        public live: LiveDataRepository
     ){}
 
     public get lines(): LineService{
@@ -52,6 +60,10 @@ export class DataService{
 
     public get otp(): OTPService{
         return this.otpService;
+    }
+
+    public get rs(): RouteStopService{
+        return this.rsService;
     }
 
 }

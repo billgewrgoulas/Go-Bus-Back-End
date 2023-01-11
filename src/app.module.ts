@@ -8,6 +8,7 @@ import { TransitGateWay } from './socketsIO/transit.gateway';
 import { AuthModule } from './auth/auth.module';
 import { AppController } from './app.controller';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { ScheduleModule } from '@nestjs/schedule';
 
 
 
@@ -17,6 +18,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
     AuthModule,
     UserModule,
     TransitModule,
+    ScheduleModule.forRoot(),
     ConfigModule.forRoot({isGlobal: true}),
     TypeOrmModule.forRootAsync({
       useFactory: () => (DBconnectionProperties)

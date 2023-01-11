@@ -7,8 +7,8 @@ export class TripService {
 
     constructor(private repo: TripRepository) {}
 
-    public insertTrips(trips: Trip[]): Promise<any>{
-        return this.repo.insert(trips);
+    public async insertTrips(trips: Trip[]): Promise<void>{
+        this.repo.insert(trips);
     }
 
     public getOne(trip_id: number){
@@ -21,6 +21,10 @@ export class TripService {
 
     public updateDebarkation(trip_id: number, stopCode: string, value: number){
         this.repo.updateDebarkation(trip_id, stopCode, value);
+    }
+
+    public async getByDate(routeCode: string, day: number, stopCode: string): Promise<Trip[]> {
+       return this.repo.getByDate(routeCode, day, stopCode);
     }
 
 }

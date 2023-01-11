@@ -21,7 +21,7 @@ export class BookingService {
 
     public async deleteBooking(booking: Booking){
         this.repo.delete(booking.user_id, booking.trip_id, booking.startStop, booking.endStop);
-        this.eventEmitter.emit('booking.deleted', new UpdateTrips([booking], this.tripRepo, 1));
+        this.eventEmitter.emit('booking.deleted', new UpdateTrips([booking], this.tripRepo, -1));
         return {trip_ids: [booking.trip_id]};
     }
 
@@ -49,11 +49,8 @@ export class BookingService {
             
         }
 
-        for (const booking of bookings) {
-            this.repo.insertOne(booking);
-        }
-
-        this.eventEmitter.emit('trips.update', new UpdateTrips(bookings, this.tripRepo, -1));
+        this.repo.insert(bookings);
+        this.eventEmitter.emit('trips.update', new UpdateTrips(bookings, this.tripRepo, 1));
         return {trip_ids: bookings.map(b => b.trip_id)};
     }
 

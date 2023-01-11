@@ -1,7 +1,7 @@
 import { Column, Entity, Index, PrimaryGeneratedColumn} from 'typeorm';
 
 @Entity()
-export class UserLine{
+export class UserRoute{
 
     @PrimaryGeneratedColumn({type: 'bigint'})
     public id: number;
@@ -11,7 +11,7 @@ export class UserLine{
     public user_id: string;
 
     @Index({unique: false})
-    @Column({type: 'bigint'})
-    public line_id: number;
+    @Column({type: 'varchar'})
+    public route_code: string;
 
 }

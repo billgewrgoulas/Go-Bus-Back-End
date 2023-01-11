@@ -4,6 +4,12 @@ import { Route } from '../entities/route.entity';
 import { Schedule } from '../entities/schedule.entity';
 import { DataService } from '../services/data.service';
 import { Trip } from '../entities/tripStatus';
+import { Line } from '../entities/line.entity';
+import { Stop } from '../entities/stop.entity';
+import { RouteStop } from '../entities/routeStops.entity';
+import { Point } from '../entities/point.entity';
+import { NewSchedule } from '../entities/newSchedule.entity';
+const greekUtils = require('greek-utils');
 
 @Controller('update')
 export class DBupdateController {
@@ -17,52 +23,119 @@ export class DBupdateController {
     @Header('Content-Type', 'application/json')
     public async populateLines(){
 
-        //const request = await <any>this.oasa.getLines();
+        const request = await <any>this.db.getLines();
+        const lines: Line[] = [];
 
-        // for (const line of request.data) {
-        //     const newLine = new Line();
-        //     newLine.id = line.id;
-        //     newLine.name = line.name;
-        //     newLine.routesNumber = line.routesNumber;
-        //     newLine.desc = line.description.el;
-        //     newLine.desc_eng = line.description.en;
-        //     const routes: Route[] = [];
-        //     line.routes.forEach((route: any)=>{
-        //         const newRoute = new Route();
-        //         newRoute.code = route.code;
-        //         newRoute.desc = route.description.el;
-        //         newRoute.desc_eng = route.description.en;
-        //         newRoute.direction = route.direction;
-        //         newRoute.id = route.id;
-        //         newRoute.lineId = line.id;
-        //         routes.push(newRoute);
-        //     });
-        //     await this.transit.populateLines(newLine, routes);
-        // }
+        for (const line of request.data) {
+            const newLine = new Line();
+            newLine.id = line.id;
+            newLine.name = line.code;
+            newLine.routesNumber = line.routes.length;
+            newLine.desc = line.name;
+            newLine.desc_eng = greekUtils.toGreeklish(line.name); 
+            newLine.routeCodes = line.routes.map((route: any) => route.code);
+            lines.push(newLine);       
+        }
 
-        return '';
+        await this.data.lines.insert(lines);
+
+        return 'ok';
+    }
+
+    @Get('/routes')
+    @Header('Content-Type', 'application/json')
+    public async populateRoutes(){
+
+        const request = await <any>this.db.getRoutes();
+        const routes: Route[] = [];
+
+        for (const route of request.data) {
+            const newRoute: Route = new Route();
+            newRoute.code = route.code;
+            newRoute.id = route.id;
+            newRoute.desc = route.name;
+            newRoute.desc_eng = greekUtils.toGreeklish(route.name);
+            newRoute.lineId = route.lines[0].id;
+            newRoute.direction = route.direction;
+            routes.push(newRoute);
+        }
+
+        await this.data.routes.insert(routes);
+
+        return 'ok';
+    }
+
+    @Get('/stops')
+    @Header('Content-Type', 'application/json')
+    public async populateStops(){
+
+        const request = await <any>this.db.getStops();
+        const stops: Stop[] = [];
+        
+        for (const stop of request.data) {
+            const newStop: Stop = new Stop();
+            newStop.code = stop.code;
+            newStop.id = stop.id;
+            newStop.desc = stop.name;
+            newStop.desc_eng = greekUtils.toGreeklish(stop.name);
+            newStop.latitude = stop.latitude;
+            newStop.longitude = stop.longitude;
+            newStop.lines = stop.lineCodes;
+            stops.push(newStop);
+        }
+
+        await this.data.stops.insert(stops);
+        return 'ok';
+    }
+
+    @Get('/routePaths')
+    @Header('Content-Type', 'application/json')
+    public async populatePaths(){
+
+        const routes: Route[] = await this.data.routes.getRoutes();
+
+        for (const route of routes) {
+
+            const infoprom = await <any>this.db.getRoutePoints(route.code);
+            const points: Point[] = [];
+            
+            for (const point of infoprom.data) {
+                const newPoint: Point = {...point};
+                newPoint.routeCode = route.code;
+                points.push(newPoint);
+            }
+
+            await this.data.points.insert(points);
+        }
+        
+        return 'ok';
     }
 
     @Get('/routeStops')
     @Header('Content-Type', 'application/json')
     public async populateStopsRoute(){
 
-        // const routes: Route[] = await this.db.getRoutes();
+        const routes: Route[] = await this.data.routes.getRoutes();
 
-        // for(const route of routes){
-            
-        //     const values: RouteStop[] = [];
-        //     route.stopCodes.forEach((stopCode) =>{
-        //         const routeStop = new RouteStop;
-        //         routeStop.routeCode = route.code;
-        //         routeStop.stopCode = stopCode;
-        //         values.push(routeStop);
-        //     });
+        for (const route of routes) {
 
-        //     await this.transit.saveRouteStop(values); 
-        // };
+            const infoprom = await <any>this.db.getRouteInfo(route.code);
+            const stopCodes: string[] = [];
+            const rss: RouteStop[] = [];
 
+            for (const stop of infoprom.data.stops) {
+                const rs: RouteStop = new RouteStop();
+                rs.routeCode = route.code;
+                rs.stopCode = stop.code;
+                rss.push(rs);
+                stopCodes.push(stop.code);
+            }
+
+            await this.data.routes.insertStopCodes(stopCodes, route.code);
+            await this.data.rs.insert(rss);
+        }
         
+        return 'ok';
     }
 
     @Get('/updateTrips')
@@ -74,9 +147,6 @@ export class DBupdateController {
         for (const route of routes) {
             const tripsPromise = await <any>this.db.getRouteTrips(route.code);
             if(tripsPromise){
-
-                await this.sleep(200);
-
                 const trips: Schedule[] = [];
                 for (const trip of tripsPromise.data) {
                     let new_trip: Schedule = new Schedule();
@@ -93,10 +163,73 @@ export class DBupdateController {
         return 'ok';
     }
 
+    @Get('/fix')
+    public async fixSchedule(): Promise<string>{
+
+        const ids: any[] = await this.data.schedule.getIds();
+
+        let i = 0;
+        for (const id of ids) {
+
+            const trip: Schedule[] = await this.data.schedule.getTripOne(+id.trip_id);
+            const stops: Stop[] = await this.data.stops.getRouteStops(trip[0].routeCode);
+            const new_trip: Schedule[] = trip.map(t => ({...t}));
+            const times: number[] = [];
+
+            for (let i = 0; i < stops.length - 1; i++) {
+
+                const s = stops[i].latitude + ',' + stops[i].longitude;
+                const e = stops[i + 1].latitude + ',' + stops[i + 1].longitude;
+                const plan: any = await this.data.otp.getBus(s, e);
+                const it = plan.data.plan.itineraries[0];
+
+                if(!it){
+                    continue
+                }
+
+                const duration: number = Math.ceil(it.duration/60);
+                times.push(duration);
+            }
+
+            if(times.length > 0){
+                let minute = new_trip[0].tripTimeMinute;
+                let hour = new_trip[0].tripTimeHour;
+                for (let i = 1; i < new_trip.length; i++) {
+
+                    if(i >= times.length){
+                        minute += times[i - 2];
+                    }else{
+                        minute += times[i - 1];
+                    }
+
+                    if(minute > 59){
+                        minute = minute - 60;
+                        hour++;
+                    }
+
+                    let arrival: string = '' + minute;
+                    if(minute < 10){
+                        arrival = '0' + minute;
+                    }
+
+                    new_trip[i].tripTimeMinute = minute;
+                    new_trip[i].tripTimeHour = hour;
+                    new_trip[i].tripTime = hour + ':' + arrival;
+                }
+
+                await this.data.ns.insert(new_trip);
+                console.log(i);
+                i++;
+            }
+
+        }
+
+        return 'ok';
+    }
+
     @Get('/populateTrips')
     public async populate(): Promise<string>{
         const schedules: Schedule[] = await this.data.schedule.getAll();
-
         const trips: Trip[] = [];
 
         for (const sch of schedules) {
@@ -105,10 +238,10 @@ export class DBupdateController {
             trip.embarkation = 0;
             trip.occupied = 0;
             trip.stopCode = sch.stopCode;
-            trip.totalSeats = 30;
+            trip.totalSeats = 50;
             trip.trip_id = sch.trip_id;
             trip.id = sch.id;
-            trip.tripTime = sch.tripTime;
+            trip.routeCode = sch.routeCode;
             trips.push(trip);
         }
 
@@ -116,55 +249,23 @@ export class DBupdateController {
         return 'ok';
     }
 
-    @Get('/populateTripStatus')
-    public async populateStatuses(): Promise<any>{
-        // const schedules: Schedule[] = await this.data.schedule.getAll();
+    @Get('/newSchedule')
+    public async newSchedules(): Promise<string>{
 
-        // const trips: TripStatus[] = [];
-        // const set = new Set<number>();
-
-        // for (const sch of schedules) {
-
-        //     if(!set.has(sch.trip_id)){
-        //         const trip: TripStatus = new TripStatus();
-        //         trip.occupied = 0;
-        //         trip.totalSeats = 30;
-        //         trip.trip_id = sch.trip_id;
-        //         trips.push(trip);
-        //         set.add(sch.trip_id);
-        //     }
-
-        // }
-
-        // await this.data.tripStatus.insertDetails(trips);
-        // return 'ok';
-    }
-
-    @Get('/stopLines')
-    public async stopLines(): Promise<any>{
-
-        const stops: any[] = await this.data.stops.getStopLines();
-        const dict = {};
-
-        for (const stop of stops) {
-            if(dict[stop.code]){
-                dict[stop.code].push(stop.name);
-            }else{
-                dict[stop.code] = [stop.name];
-            }
-        }
-
-        for (const key in dict) {
-            this.data.stops.updateStopLines(dict[key], key);
-        }
+        const schedules: NewSchedule[] = await this.data.ns.getAll();
+        await this.data.schedule.insertTrips(schedules);
 
         return 'ok';
-        
     }
-
 
     private sleep(duration: number): Promise<void>{
         return new Promise((resolve) => setTimeout(resolve, duration));
     }
+
+    private r(min: number, max: number) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
+      }
 
 }

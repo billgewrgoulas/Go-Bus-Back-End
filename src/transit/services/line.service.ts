@@ -11,4 +11,8 @@ export class LineService {
         return this.repo.getAll();
     }
 
+    public async insert(lines: Line[]): Promise<void>{
+        this.repo.insert(lines);
+    }
+
 }

@@ -17,5 +17,9 @@ export class LineRepository extends IGenericRepository<Line>{
     public override getAll(): Promise<Line[]> {
         return super.getAll();
     }
+
+    public override async insert(lines: Line[]): Promise<void>{
+        super.insert(lines);
+    }
     
 }

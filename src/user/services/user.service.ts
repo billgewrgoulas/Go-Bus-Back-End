@@ -20,12 +20,12 @@ export class UserService {
         this.repo.insertStop(code, user);
     }
 
-    public insertLine(user: string, id: number){
-        this.repo.insertLine(id, user);
+    public insertRoute(user: string, code: string){
+        this.repo.insertRoute(code, user);
     }
 
-    public deleteLine(user: string, id: number){
-        this.repo.deleteLine(id, user);
+    public deleteLine(user: string, code: string){
+        this.repo.deleteRoute(code, user);
     }
 
     public deleteStop(code: string, user: string){
@@ -37,7 +37,7 @@ export class UserService {
     }
 
     public getLines(user: string){
-        return this.repo.getAllLines(user);
+        return this.repo.getAllRoutes(user);
     }
 
 }

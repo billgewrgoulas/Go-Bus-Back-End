@@ -17,6 +17,12 @@ export class OTPService {
         return lastValueFrom(this.http.get(this.uri + slug)).catch(e => console.log(e));
     }
 
+    public async getBus(start: string, end: string): Promise<any>{
+                
+        const url: string = `http://localhost:8080/otp/routers/default/plan?fromPlace=${start}&toPlace=${end}&time=1:19pm&date=01-09-2023&mode=CAR&arriveBy=false&wheelchair=false&showIntermediateStops=true&debugItineraryFilter=false&locale=en`;
+        return lastValueFrom(this.http.get(url)).catch(e => console.log(e));
+    }
+
     public async getBookingPlan(booking: Booking): Promise<Plan>{
 
         const { data } = await this.getTrips(booking.slug);
@@ -78,6 +84,7 @@ export class OTPService {
                 }
 
                 if(leg.mode == 'TRAM'){
+                    console.log(leg.tripId);
                     trip_ids.push(+leg.tripId.split(":")[1]);
                     stopCodes.push(leg.from.stopCode);
                 }
@@ -90,7 +97,7 @@ export class OTPService {
 
         const new_plan: Plan = new Plan(plan, itineraries, slug);   
         const trips: Trip[] = await this.tripRepo.getOccupation(trip_ids, stopCodes);  
-        const occupancy: any = {};   
+        const occupancy: any = {};  
 
         new_plan.itineraries.forEach(it => {
             it.legs.forEach(leg => {
@@ -98,10 +105,10 @@ export class OTPService {
                 leg.setFlexGrow(it.duration);
                 
                 if(leg.mode == 'TRAM'){
-                    const occupation: number = trips.find(t => t.trip_id == +leg.tripId).occupied;
-                    occupancy[leg.tripId] = 30 - occupation;
+                    const trip: Trip = trips.find(t => t.trip_id == +leg.tripId);
+                    occupancy[leg.tripId] = trip.totalSeats - trip.occupied;
                 }
-
+                
             });
         });
 

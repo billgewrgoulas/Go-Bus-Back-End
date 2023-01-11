@@ -1,11 +1,8 @@
-import {Controller,Post,Header,UseGuards,Request, Get, Delete, Param} from '@nestjs/common';
-import { DataService } from 'src/transit/services/data.service';
+import {Controller,Post,Header,UseGuards,Request, Get, Param} from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { Plan } from 'src/transit/transitDtos/itinerary.dto';
-import { Booking } from 'src/transit/entities/tripStatus';
 import { SavedService } from '../services/saved.service';
-import { UserStop } from '../entities/userStop.entity';
-import { UserLine } from '../entities/userLine.entity';
+import { Stop } from 'src/transit/entities/stop.entity';
+import { Route } from 'src/transit/entities/route.entity';
 
 @Controller('saved')
 export class SavedController {
@@ -23,36 +20,42 @@ export class SavedController {
     @Header('Content-Type', 'application/json')
     @Get('/deleteStop/:code')
     public async deleteBooking(@Request() req: any, @Param('code') code: string): Promise<any> {
-        console.log(code);
         return this.saved.deleteStop(code, req.user.email);
     }
 
     @UseGuards(JwtAuthGuard)
     @Header('Content-Type', 'application/json')
-    @Get('/addLine/:id')
-    public async addLine(@Request() req: any, @Param('id') id: number): Promise<any> {
-        return this.saved.insertLine(req.user.email, id);
+    @Get('/saveRoute/:code')
+    public async addRoute(@Request() req: any, @Param('code') code: string): Promise<any> {
+        return this.saved.insertRoute(req.user.email, code);
     }
 
     @UseGuards(JwtAuthGuard)
     @Header('Content-Type', 'application/json')
-    @Post('/deleteLine/:id')
-    public async deleteLine(@Request() req: any, @Param('id') id: number): Promise<any> {
-        return this.saved.deleteLine(req.user.email, id);
+    @Get('/deleteRoute/:code')
+    public async deleteLine(@Request() req: any, @Param('code') code: string): Promise<any> {
+        return this.saved.deleteRoute(req.user.email, code);
     }
 
     @UseGuards(JwtAuthGuard)
     @Header('Content-Type', 'application/json')
     @Get('/getStops')
-    public async getStops(@Request() req: any): Promise<string[]> {
+    public async getGetRoutes(@Request() req: any): Promise<string[]> {
         return this.saved.getStops(req.user.email);
     }
 
     @UseGuards(JwtAuthGuard)
     @Header('Content-Type', 'application/json')
-    @Post('/getLines')
-    public async getLines(@Request() req: any): Promise<UserLine[]> {
-        return this.saved.getLines(req.user.email);
+    @Get('/getRoutes')
+    public async getRoutes(@Request() req: any): Promise<string[]> {
+        return this.saved.getRoutes(req.user.email);
     }
- 
+
+    @UseGuards(JwtAuthGuard)
+    @Header('Content-Type', 'application/json')
+    @Get('/getSavedInfo')
+    public async getSavedInfo(@Request() req: any): Promise<{routes: Route[], stops: Stop[]}> {
+        return this.saved.getInfo(req.user.email);
+    }
+
 }

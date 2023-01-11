@@ -17,4 +17,8 @@ export class PointRepository extends IGenericRepository<Point>{
         return super.get({routeCode: routeCode});
     }
 
+    public override async insert(data: Point[]): Promise<void> {
+        super.insert(data);
+    }
+
 }

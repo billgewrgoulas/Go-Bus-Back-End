@@ -15,6 +15,14 @@ export class ScheduleService {
         return this.repo.insert(trips);
     }
 
+    public async getIds(): Promise<any[]>{
+        return this.repo.getIds();
+    }
+
+    public async getTripOne(id: number): Promise<Schedule[]>{
+        return this.repo.getTripOne(id);
+    }
+
     public getTrips(routeCode: string, day: number, stopCode: string): Promise<Schedule[]>{
         return this.repo.getTrip(day, routeCode, stopCode);
     }

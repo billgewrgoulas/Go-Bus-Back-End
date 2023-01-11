@@ -11,4 +11,8 @@ export class PointService {
         return this.repo.get(routeCode);
     }
 
+    public async insert(points: Point[]): Promise<void>{
+        return this.repo.insert(points);
+    }
+
 }

@@ -1,12 +1,10 @@
 import { Injectable } from "@nestjs/common";
 import { InjectDataSource, InjectRepository } from "@nestjs/typeorm";
 import { User } from "src/user/entities/user.entity";
-import { DataSource, Repository, UpdateResult } from "typeorm";
-import { Line } from "../transit/entities/line.entity";
+import { DataSource, Repository } from "typeorm";
 import { IGenericRepository } from "./generic.repository";
 import { UserStop } from "src/user/entities/userStop.entity";
-import { use } from "passport";
-import { UserLine } from "src/user/entities/userLine.entity";
+import { UserRoute } from "src/user/entities/userRoute.entity";
 
 @Injectable()
 export class UserRepository extends IGenericRepository<User>{
@@ -38,9 +36,9 @@ export class UserRepository extends IGenericRepository<User>{
             .catch(e => console.log(e));
     }
 
-    public insertLine(line_id: number, user_id: string){
-        this.db.getRepository(UserLine)
-            .insert({user_id: user_id, line_id: line_id})
+    public insertRoute(route_code: string, user_id: string){
+        this.db.getRepository(UserRoute)
+            .insert({user_id: user_id, route_code: route_code})
             .catch(e => console.log(e));
     }
 
@@ -53,32 +51,33 @@ export class UserRepository extends IGenericRepository<User>{
             .catch(e => console.log(e));
     }
 
-    public deleteLine(line_id: number, user_id: string){
-        this.db.getRepository(UserLine)
+    public deleteRoute(route_code: string, user_id: string){
+        this.db.getRepository(UserRoute)
             .createQueryBuilder()
             .delete()
-            .where({user_id: user_id, line_id: line_id})
+            .where({user_id: user_id, route_code: route_code})
             .execute()
             .catch(e => console.log(e));
     }
 
     public async getAllStops(user_id: string): Promise<string[]>{
-        const stops: any[] = await this.db.getRepository(UserStop)
+        return (<any[]>await this.db.getRepository(UserStop)
             .createQueryBuilder()
             .select(['stop_code'])
             .where({user_id: user_id})
             .execute()
-            .catch(e => console.log(e));
-        return stops.map(s => s.stop_code);
+            .catch(e => console.log(e)))
+            .map(s => s.stop_code);
     }
 
-    public async getAllLines(user_id: string): Promise<UserLine[]>{
-        return this.db.getRepository(UserLine)
+    public async getAllRoutes(user_id: string): Promise<string[]>{
+        return (<any[]>await this.db.getRepository(UserRoute)
             .createQueryBuilder()
-            .select(['*'])
+            .select(['route_code'])
             .where({user_id: user_id})
             .execute()
-            .catch(e => console.log(e));
+            .catch(e => console.log(e)))
+            .map(r => r.route_code);
     }
 
 }

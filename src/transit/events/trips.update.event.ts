@@ -1,6 +1,5 @@
 import { TripRepository } from 'src/repositories/trip.repository';
 import { Booking } from '../entities/tripStatus';
-import { RouteRepository } from 'src/repositories/route.repository';
 
 export class UpdateTrips{
 
