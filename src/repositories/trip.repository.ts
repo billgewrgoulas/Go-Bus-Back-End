@@ -61,8 +61,8 @@ export class TripRepository extends IGenericRepository<Trip>{
         return this.db.query(query).catch(e => console.log(e));
     }
 
-    public updateOccupation(stopCodes: string[], value: number, trip_id: number){
-        this.entityRepository
+    public async updateOccupation(stopCodes: string[], value: number, trip_id: number): Promise<void>{
+        await this.entityRepository
             .createQueryBuilder()
             .update()
             .set({occupied: () => `occupied + ${value}`})
@@ -76,9 +76,9 @@ export class TripRepository extends IGenericRepository<Trip>{
         return this.db.query(`
             SELECT * 
             FROM transit_data.trip AS trip
-            WHERE trip."trip_id"=${trip_id}
-            ORDER BY trip."tripTime";
-        `).catch(e => console.log(e.detail));
+            WHERE trip."trip_id"='${trip_id}'
+            ORDER BY trip."id" ASC;
+        `).catch(e => console.log(e));
     }
 
     public async getByDate(routeCode: string, day: number, stopCode: string): Promise<Trip[]> {

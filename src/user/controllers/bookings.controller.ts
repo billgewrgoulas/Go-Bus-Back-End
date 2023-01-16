@@ -3,6 +3,10 @@ import { DataService } from 'src/transit/services/data.service';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { Plan } from 'src/transit/transitDtos/itinerary.dto';
 import { Booking } from 'src/transit/entities/tripStatus';
+import { Schedule } from 'src/transit/entities/schedule.entity';
+import { Route } from 'src/transit/entities/route.entity';
+import { Stop } from 'src/transit/entities/stop.entity';
+import { Interval, Timeout } from '@nestjs/schedule';
 
 
 @Controller('bookings')

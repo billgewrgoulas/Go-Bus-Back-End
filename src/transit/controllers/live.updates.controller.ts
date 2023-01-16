@@ -41,7 +41,7 @@ export class LiveUpdatesController {
         return arrivals;
     }
 
-    // @Interval(30000)
+    //@Interval(30000)
     public async saveLiveData(): Promise<void>{
 
         const lineCodes: string[] = (await this.data.lines.getLines()).map(line => line.name);

@@ -22,7 +22,7 @@ export abstract class IGenericRepository<T extends QueryDeepPartialEntity<Object
 			.select(['*'])
 			.where(spec)
 			.execute()
-			.catch(e => console.log(e.detail));
+			.catch(e => console.log(e));
 	}
 
 	protected async insert(data: T[]): Promise<void | UpdateResult>{

@@ -36,20 +36,18 @@ export class BookingService {
 
         for (const booking of bookings) {
             
-            const tripStatus: Trip | void = await this.tripRepo.getStatus(booking.trip_id, booking.startStop);
-            if(!tripStatus){
-                this.throwError('Booking not possible, try again later');
-                break;
+            const ids: number[] = booking.stopCodes.map(v => booking.trip_id);
+            const occupation: Trip[] = await this.tripRepo.getOccupation(ids, booking.stopCodes);
+
+            for (const trip of occupation) {
+                if(+trip.occupied >= trip.totalSeats){
+                    this.throwError('No seats available');
+                }
             }
 
-            const totalOnBoard: number = +tripStatus.occupied + +tripStatus.embarkation - +tripStatus.debarkation;
-            if(totalOnBoard > tripStatus.totalSeats){
-                this.throwError('No seats available');
-            }
-            
         }
 
-        this.repo.insert(bookings);
+        await this.repo.insert(bookings);
         this.eventEmitter.emit('trips.update', new UpdateTrips(bookings, this.tripRepo, 1));
         return {trip_ids: bookings.map(b => b.trip_id)};
     }

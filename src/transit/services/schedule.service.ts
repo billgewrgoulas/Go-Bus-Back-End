@@ -31,4 +31,8 @@ export class ScheduleService {
         return this.repo.getAll();
     }
 
+    public getByTime(day: number, route: string, s: number, e: number): Promise<Schedule[]>{
+        return this.repo.getByTime(s, e, day, route);
+    }
+
 }

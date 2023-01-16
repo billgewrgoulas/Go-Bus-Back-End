@@ -35,6 +35,14 @@ export class ScheduleRepository extends IGenericRepository<Schedule>{
         `).catch(e => console.log(e));
     }
 
+    public async getByTime(s: number, e: number, day: number, route: string): Promise<Schedule[]>{
+        return this.db.query(`
+            SELECT *
+            FROM transit_data.schedule AS s
+            WHERE s."routeCode"='${route}' AND s."day"='${day}' AND s."tripTimeHour" > '${s}' AND s."tripTimeHour" < '${e}';
+        `).catch(e => console.log(e));
+    }
+
     public override insert(data: Schedule[]): Promise<void | UpdateResult> {
         return super.insert(data);
     }

@@ -242,6 +242,7 @@ export class DBupdateController {
             trip.trip_id = sch.trip_id;
             trip.id = sch.id;
             trip.routeCode = sch.routeCode;
+            trip.time = sch.tripTime;
             trips.push(trip);
         }
 

@@ -28,7 +28,4 @@ export class User {
   @Column({nullable: false, type: 'varchar'})
   public name: string;
 
-  @OneToMany(() => Booking, (b: Booking): User => b.user)
-  public bookings: Booking[];
-
 }

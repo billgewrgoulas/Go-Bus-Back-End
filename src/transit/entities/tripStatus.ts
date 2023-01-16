@@ -33,13 +33,6 @@ export class Booking{
     @Column({nullable: true, type: 'varchar'})
     public travel: string;
 
-    @ManyToOne(() => User, (user: User) => user.bookings, {
-        cascade: true, 
-        nullable: false, 
-    })
-    @JoinColumn({referencedColumnName: 'email', name: 'user_id'})
-    public user: User;
-
     public stopCodes: string[];
 
 }
@@ -71,6 +64,9 @@ export class Trip{
 
     @Column({nullable: true, type: 'varchar'})
     public routeCode: string;
+
+    @Column({nullable: true, type: 'varchar'})
+    public time: string;
 
 }
 

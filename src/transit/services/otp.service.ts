@@ -84,7 +84,6 @@ export class OTPService {
                 }
 
                 if(leg.mode == 'TRAM'){
-                    console.log(leg.tripId);
                     trip_ids.push(+leg.tripId.split(":")[1]);
                     stopCodes.push(leg.from.stopCode);
                 }

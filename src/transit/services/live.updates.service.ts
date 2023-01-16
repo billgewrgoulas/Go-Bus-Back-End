@@ -12,7 +12,7 @@ import { Interval } from '@nestjs/schedule';
 @Injectable()
 export class LiveUpdatesService {
 
-    private readonly token: string = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NzM2MTI5MTl9.A8Cdo5xmeVtg0n1HaAQ5zLWnCED9SrWVNiC81PkPHWc';
+    private readonly token: string = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NzQwMzY5Mjd9.Fj_aF6RzTo-77rYc9OuulpzWwcahdtGe-FU5v2-mCGg';
     private readonly uri: string = 'https://rest.citybus.gr/api/v1/el/106/';
     
     constructor(private http: HttpService, private data: DataService){}
@@ -48,6 +48,11 @@ export class LiveUpdatesService {
             const s: string = arrival.latitude + ',' + arrival.longitude;
             const e: string = stop.latitude + ',' + stop.longitude;
             const plan: any = await this.data.otp.getBus(s, e);
+
+            if(!plan || !plan.data.plan){
+                continue;
+            }
+
             const it = plan.data.plan.itineraries[0];
             
             if(!it){
