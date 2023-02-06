@@ -1,8 +1,6 @@
-import {Controller,Post,Header,UseGuards,Request, Get, Param} from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import {Controller, Header, UseGuards, Request, Get, Param} from '@nestjs/common';
 import { SavedService } from '../services/saved.service';
-import { Stop } from 'src/transit/entities/stop.entity';
-import { Route } from 'src/transit/entities/route.entity';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('saved')
 export class SavedController {
@@ -54,7 +52,7 @@ export class SavedController {
     @UseGuards(JwtAuthGuard)
     @Header('Content-Type', 'application/json')
     @Get('/getSavedInfo')
-    public async getSavedInfo(@Request() req: any): Promise<{routes: Route[], stops: Stop[]}> {
+    public async getSavedInfo(@Request() req: any): Promise<{routes: string[], stops: string[]}> {
         return this.saved.getInfo(req.user.email);
     }
 

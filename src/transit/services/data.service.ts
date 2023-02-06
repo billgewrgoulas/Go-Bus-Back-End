@@ -1,5 +1,4 @@
 import { Injectable } from "@nestjs/common";
-import { BookingService } from "./booking.service";
 import { LineService } from "./line.service";
 import { PointService } from "./points.service";
 import { RouteService } from "./routes.service";
@@ -8,9 +7,7 @@ import { StopService } from "./stop.service";
 import { TripService } from "./trip.service";
 import { OTPService } from "./otp.service";
 import { RouteStopService } from "./routeStop.service";
-import { NewSchedule } from "../entities/newSchedule.entity";
 import { NewScheduleService } from "./newSchedule.service";
-import { Repository } from "typeorm";
 import { LiveDataRepository } from "src/repositories/liveData.repository";
 
 @Injectable()
@@ -22,7 +19,6 @@ export class DataService{
         private stopsService: StopService,
         private schSerivce: ScheduleService,
         private pointService: PointService,
-        private bookingService: BookingService,
         private tripService: TripService,
         private otpService: OTPService,
         private rsService: RouteStopService,
@@ -48,10 +44,6 @@ export class DataService{
 
     public get points(): PointService{
         return this.pointService;
-    }
-
-    public get booking(): BookingService{
-        return this.bookingService;
     }
 
     public get trips(): TripService{

@@ -1,0 +1,1086 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>city-bas-be documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">city-bas-be documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content controller">
+                   <div class="content-data">
+
+
+
+
+
+<ol class="breadcrumb">
+  <li>Controllers</li>
+  <li >DBupdateController</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/transit/controllers/db.update.controller.ts</code>
+        </p>
+
+            <p class="comment">
+                <h3>Prefix</h3>
+            </p>
+            <p class="comment">
+                <code>update</code>
+            </p>
+
+
+
+
+
+
+            <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#fixSchedule" >fixSchedule</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#newSchedules" >newSchedules</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#populate" >populate</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#populateLines" >populateLines</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#populatePaths" >populatePaths</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#populateRoutes" >populateRoutes</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#populateStops" >populateStops</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#populateStopsRoute" >populateStopsRoute</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#populateTrips" >populateTrips</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#r" >r</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#sleep" >sleep</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="fixSchedule"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>fixSchedule</b></span>
+                        <a href="#fixSchedule"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>fixSchedule()</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Get(&#x27;/fix&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="167"
+                            class="link-to-prism">src/transit/controllers/db.update.controller.ts:167</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;string&gt;</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="newSchedules"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>newSchedules</b></span>
+                        <a href="#newSchedules"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>newSchedules()</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Get(&#x27;/newSchedule&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="254"
+                            class="link-to-prism">src/transit/controllers/db.update.controller.ts:254</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;string&gt;</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="populate"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>populate</b></span>
+                        <a href="#populate"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>populate()</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Get(&#x27;/populateTrips&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="231"
+                            class="link-to-prism">src/transit/controllers/db.update.controller.ts:231</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;string&gt;</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="populateLines"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>populateLines</b></span>
+                        <a href="#populateLines"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>populateLines()</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Get(&#x27;/lines&#x27;)<br />@Header(&#x27;Content-Type&#x27;, &#x27;application/json&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="24"
+                            class="link-to-prism">src/transit/controllers/db.update.controller.ts:24</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="populatePaths"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>populatePaths</b></span>
+                        <a href="#populatePaths"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>populatePaths()</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Get(&#x27;/routePaths&#x27;)<br />@Header(&#x27;Content-Type&#x27;, &#x27;application/json&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="93"
+                            class="link-to-prism">src/transit/controllers/db.update.controller.ts:93</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="populateRoutes"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>populateRoutes</b></span>
+                        <a href="#populateRoutes"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>populateRoutes()</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Get(&#x27;/routes&#x27;)<br />@Header(&#x27;Content-Type&#x27;, &#x27;application/json&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="47"
+                            class="link-to-prism">src/transit/controllers/db.update.controller.ts:47</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="populateStops"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>populateStops</b></span>
+                        <a href="#populateStops"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>populateStops()</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Get(&#x27;/stops&#x27;)<br />@Header(&#x27;Content-Type&#x27;, &#x27;application/json&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="70"
+                            class="link-to-prism">src/transit/controllers/db.update.controller.ts:70</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="populateStopsRoute"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>populateStopsRoute</b></span>
+                        <a href="#populateStopsRoute"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>populateStopsRoute()</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Get(&#x27;/routeStops&#x27;)<br />@Header(&#x27;Content-Type&#x27;, &#x27;application/json&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="116"
+                            class="link-to-prism">src/transit/controllers/db.update.controller.ts:116</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="populateTrips"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>populateTrips</b></span>
+                        <a href="#populateTrips"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>populateTrips()</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Get(&#x27;/updateTrips&#x27;)<br />@Header(&#x27;Content-Type&#x27;, &#x27;application/json&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="143"
+                            class="link-to-prism">src/transit/controllers/db.update.controller.ts:143</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;string&gt;</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="r"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>r</b></span>
+                        <a href="#r"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>r(min: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, max: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="266"
+                            class="link-to-prism">src/transit/controllers/db.update.controller.ts:266</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>min</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>max</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="sleep"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>sleep</b></span>
+                        <a href="#sleep"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>sleep(duration: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="262"
+                            class="link-to-prism">src/transit/controllers/db.update.controller.ts:262</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>duration</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Controller, Get, Header } from &#x27;@nestjs/common&#x27;;
+import { DBUpdateService } from &#x27;../services/db.update.service&#x27;;
+import { Route } from &#x27;../entities/route.entity&#x27;;
+import { Schedule } from &#x27;../entities/schedule.entity&#x27;;
+import { DataService } from &#x27;../services/data.service&#x27;;
+import { Trip } from &#x27;../entities/trip.entity&#x27;;
+import { Line } from &#x27;../entities/line.entity&#x27;;
+import { Stop } from &#x27;../entities/stop.entity&#x27;;
+import { RouteStop } from &#x27;../entities/routeStops.entity&#x27;;
+import { Point } from &#x27;../entities/point.entity&#x27;;
+import { NewSchedule } from &#x27;../entities/newSchedule.entity&#x27;;
+const greekUtils &#x3D; require(&#x27;greek-utils&#x27;);
+
+@Controller(&#x27;update&#x27;)
+export class DBupdateController {
+
+    constructor(
+		private data: DataService,
+        private db: DBUpdateService
+	){}
+
+    @Get(&#x27;/lines&#x27;)
+    @Header(&#x27;Content-Type&#x27;, &#x27;application/json&#x27;)
+    public async populateLines(){
+
+        const request &#x3D; await &lt;any&gt;this.db.getLines();
+        const lines: Line[] &#x3D; [];
+
+        for (const line of request.data) {
+            const newLine &#x3D; new Line();
+            newLine.id &#x3D; line.id;
+            newLine.name &#x3D; line.code;
+            newLine.routesNumber &#x3D; line.routes.length;
+            newLine.desc &#x3D; line.name;
+            newLine.desc_eng &#x3D; greekUtils.toGreeklish(line.name); 
+            newLine.routeCodes &#x3D; line.routes.map((route: any) &#x3D;&gt; route.code);
+            lines.push(newLine);       
+        }
+
+        await this.data.lines.insert(lines);
+
+        return &#x27;ok&#x27;;
+    }
+
+    @Get(&#x27;/routes&#x27;)
+    @Header(&#x27;Content-Type&#x27;, &#x27;application/json&#x27;)
+    public async populateRoutes(){
+
+        const request &#x3D; await &lt;any&gt;this.db.getRoutes();
+        const routes: Route[] &#x3D; [];
+
+        for (const route of request.data) {
+            const newRoute: Route &#x3D; new Route();
+            newRoute.code &#x3D; route.code;
+            newRoute.id &#x3D; route.id;
+            newRoute.desc &#x3D; route.name;
+            newRoute.desc_eng &#x3D; greekUtils.toGreeklish(route.name);
+            newRoute.lineId &#x3D; route.lines[0].id;
+            newRoute.direction &#x3D; route.direction;
+            routes.push(newRoute);
+        }
+
+        await this.data.routes.insert(routes);
+
+        return &#x27;ok&#x27;;
+    }
+
+    @Get(&#x27;/stops&#x27;)
+    @Header(&#x27;Content-Type&#x27;, &#x27;application/json&#x27;)
+    public async populateStops(){
+
+        const request &#x3D; await &lt;any&gt;this.db.getStops();
+        const stops: Stop[] &#x3D; [];
+        
+        for (const stop of request.data) {
+            const newStop: Stop &#x3D; new Stop();
+            newStop.code &#x3D; stop.code;
+            newStop.id &#x3D; stop.id;
+            newStop.desc &#x3D; stop.name;
+            newStop.desc_eng &#x3D; greekUtils.toGreeklish(stop.name);
+            newStop.latitude &#x3D; stop.latitude;
+            newStop.longitude &#x3D; stop.longitude;
+            newStop.lines &#x3D; stop.lineCodes;
+            stops.push(newStop);
+        }
+
+        await this.data.stops.insert(stops);
+        return &#x27;ok&#x27;;
+    }
+
+    @Get(&#x27;/routePaths&#x27;)
+    @Header(&#x27;Content-Type&#x27;, &#x27;application/json&#x27;)
+    public async populatePaths(){
+
+        const routes: Route[] &#x3D; await this.data.routes.getRoutes();
+
+        for (const route of routes) {
+
+            const infoprom &#x3D; await &lt;any&gt;this.db.getRoutePoints(route.code);
+            const points: Point[] &#x3D; [];
+            
+            for (const point of infoprom.data) {
+                const newPoint: Point &#x3D; {...point};
+                newPoint.routeCode &#x3D; route.code;
+                points.push(newPoint);
+            }
+
+            await this.data.points.insert(points);
+        }
+        
+        return &#x27;ok&#x27;;
+    }
+
+    @Get(&#x27;/routeStops&#x27;)
+    @Header(&#x27;Content-Type&#x27;, &#x27;application/json&#x27;)
+    public async populateStopsRoute(){
+
+        const routes: Route[] &#x3D; await this.data.routes.getRoutes();
+
+        for (const route of routes) {
+
+            const infoprom &#x3D; await &lt;any&gt;this.db.getRouteInfo(route.code);
+            const stopCodes: string[] &#x3D; [];
+            const rss: RouteStop[] &#x3D; [];
+
+            for (const stop of infoprom.data.stops) {
+                const rs: RouteStop &#x3D; new RouteStop();
+                rs.routeCode &#x3D; route.code;
+                rs.stopCode &#x3D; stop.code;
+                rss.push(rs);
+                stopCodes.push(stop.code);
+            }
+
+            await this.data.routes.insertStopCodes(stopCodes, route.code);
+            await this.data.rs.insert(rss);
+        }
+        
+        return &#x27;ok&#x27;;
+    }
+
+    @Get(&#x27;/updateTrips&#x27;)
+    @Header(&#x27;Content-Type&#x27;, &#x27;application/json&#x27;)
+    public async populateTrips(): Promise&lt;string&gt;{
+
+        const routes: Route[] &#x3D; await this.data.routes.getRoutes();
+
+        for (const route of routes) {
+            const tripsPromise &#x3D; await &lt;any&gt;this.db.getRouteTrips(route.code);
+            if(tripsPromise){
+                const trips: Schedule[] &#x3D; [];
+                for (const trip of tripsPromise.data) {
+                    let new_trip: Schedule &#x3D; new Schedule();
+                    new_trip &#x3D; {...trip};
+                    new_trip.line &#x3D; trip.lineCode;
+                    new_trip.trip_id &#x3D; trip.id;
+                    trips.push(new_trip);
+                }
+
+                await this.data.schedule.insertTrips(trips);
+            }
+        }
+
+        return &#x27;ok&#x27;;
+    }
+
+    @Get(&#x27;/fix&#x27;)
+    public async fixSchedule(): Promise&lt;string&gt;{
+
+        const ids: any[] &#x3D; await this.data.schedule.getIds();
+
+        let i &#x3D; 0;
+        for (const id of ids) {
+
+            const trip: Schedule[] &#x3D; await this.data.schedule.getTripOne(+id.trip_id);
+            const stops: Stop[] &#x3D; await this.data.stops.getRouteStops(trip[0].routeCode);
+            const new_trip: Schedule[] &#x3D; trip.map(t &#x3D;&gt; ({...t}));
+            const times: number[] &#x3D; [];
+
+            for (let i &#x3D; 0; i &lt; stops.length - 1; i++) {
+
+                const s &#x3D; stops[i].latitude + &#x27;,&#x27; + stops[i].longitude;
+                const e &#x3D; stops[i + 1].latitude + &#x27;,&#x27; + stops[i + 1].longitude;
+                const plan: any &#x3D; await this.data.otp.getBus(s, e);
+                const it &#x3D; plan.data.plan.itineraries[0];
+
+                if(!it){
+                    continue
+                }
+
+                const duration: number &#x3D; Math.ceil(it.duration/60);
+                times.push(duration);
+            }
+
+            if(times.length &gt; 0){
+                let minute &#x3D; new_trip[0].tripTimeMinute;
+                let hour &#x3D; new_trip[0].tripTimeHour;
+                for (let i &#x3D; 1; i &lt; new_trip.length; i++) {
+
+                    if(i &gt;&#x3D; times.length){
+                        minute +&#x3D; times[i - 2];
+                    }else{
+                        minute +&#x3D; times[i - 1];
+                    }
+
+                    if(minute &gt; 59){
+                        minute &#x3D; minute - 60;
+                        hour++;
+                    }
+
+                    let arrival: string &#x3D; &#x27;&#x27; + minute;
+                    if(minute &lt; 10){
+                        arrival &#x3D; &#x27;0&#x27; + minute;
+                    }
+
+                    new_trip[i].tripTimeMinute &#x3D; minute;
+                    new_trip[i].tripTimeHour &#x3D; hour;
+                    new_trip[i].tripTime &#x3D; hour + &#x27;:&#x27; + arrival;
+                }
+
+                await this.data.ns.insert(new_trip);
+                console.log(i);
+                i++;
+            }
+
+        }
+
+        return &#x27;ok&#x27;;
+    }
+
+    @Get(&#x27;/populateTrips&#x27;)
+    public async populate(): Promise&lt;string&gt;{
+        const schedules: Schedule[] &#x3D; await this.data.schedule.getAll();
+        const trips: Trip[] &#x3D; [];
+
+        for (const sch of schedules) {
+            const trip: Trip &#x3D; new Trip();
+            trip.debarkation &#x3D; 0;
+            trip.embarkation &#x3D; 0;
+            trip.occupied &#x3D; 0;
+            trip.stopCode &#x3D; sch.stopCode;
+            trip.totalSeats &#x3D; 50;
+            trip.trip_id &#x3D; sch.trip_id;
+            trip.id &#x3D; sch.id;
+            trip.routeCode &#x3D; sch.routeCode;
+            trip.time &#x3D; sch.tripTime;
+            trips.push(trip);
+        }
+
+        await this.data.trips.insertTrips(trips);
+        return &#x27;ok&#x27;;
+    }
+
+    @Get(&#x27;/newSchedule&#x27;)
+    public async newSchedules(): Promise&lt;string&gt;{
+
+        const schedules: NewSchedule[] &#x3D; await this.data.ns.getAll();
+        await this.data.schedule.insertTrips(schedules);
+
+        return &#x27;ok&#x27;;
+    }
+
+    private sleep(duration: number): Promise&lt;void&gt;{
+        return new Promise((resolve) &#x3D;&gt; setTimeout(resolve, duration));
+    }
+
+    private r(min: number, max: number) {
+        min &#x3D; Math.ceil(min);
+        max &#x3D; Math.floor(max);
+        return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
+      }
+
+}
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'controller';
+            var COMPODOC_CURRENT_PAGE_URL = 'DBupdateController.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

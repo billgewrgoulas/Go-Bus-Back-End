@@ -7,7 +7,6 @@ import { Stop } from './entities/stop.entity';
 import { TransitController } from './controllers/transit.controller';
 import { RouteStop } from './entities/routeStops.entity';
 import { DBUpdateService } from './services/db.update.service';
-import { DBupdateController } from './controllers/db.update.controller';
 import { LiveUpdatesService } from './services/live.updates.service';
 import { LiveUpdatesController } from './controllers/live.updates.controller';
 import { HttpModule } from '@nestjs/axios';
@@ -24,9 +23,7 @@ import { ScheduleRepository } from '../repositories/schedule.repository';
 import { StopRepository } from '../repositories/stop.repository';
 import { Context } from './Navigator/context';
 import { DataService } from './services/data.service';
-import { Booking, Trip } from './entities/tripStatus';
-import { BookingRepository } from 'src/repositories/booking.repository';
-import { BookingService } from './services/booking.service';
+import { Trip } from './entities/trip.entity';
 import { TripRepository } from 'src/repositories/trip.repository';
 import { TripService } from './services/trip.service';
 import { OTPService } from './services/otp.service';
@@ -38,20 +35,23 @@ import { NewSchedule } from './entities/newSchedule.entity';
 import { NewScheduleService } from './services/newSchedule.service';
 import { LiveData } from './entities/live.data';
 import { LiveDataRepository } from 'src/repositories/liveData.repository';
+import { ScheduleDayDto } from './transitDtos/scheduleDays.dto';
+import { Scheduler } from './controllers/db.update.controller';
+
 
 
 @Module({
     imports: [
-        TypeOrmModule.forFeature([NewSchedule, Line, Route, Point, Stop, RouteStop, Schedule, Trip, Booking, LiveData]), 
+        TypeOrmModule.forFeature([NewSchedule, Line, Route, Point, Stop, RouteStop, Schedule, Trip, LiveData]), 
         HttpModule
     ],
     providers: [
         DBUpdateService, LiveUpdatesService, LineService, RouteService, DataService, OTPService,
-        PointService, ScheduleService, StopService, BookingRepository, BookingService, RouteStopRepository, RouteStopService,
+        PointService, ScheduleService, StopService, RouteStopRepository, RouteStopService,
         TripRepository, TripService, LineRepository, RouteRepository, PointRepository, ScheduleRepository, StopRepository,
         TripUpdatesListener, TransitGateWay, NewScheduleService, LiveDataRepository
     ],
-    controllers: [TransitController, DBupdateController, LiveUpdatesController],
+    controllers: [TransitController, LiveUpdatesController, Scheduler],
     exports: [DataService]
 })
 export class TransitModule {}

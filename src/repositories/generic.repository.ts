@@ -4,7 +4,7 @@ import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity
 export abstract class IGenericRepository<T extends QueryDeepPartialEntity<ObjectLiteral>> {
 
 	protected constructor(
-		protected readonly entityRepository: Repository<T>, 
+		protected readonly entityRepository?: Repository<T>, 
 		protected readonly db?: DataSource
 	){}
 
@@ -29,8 +29,8 @@ export abstract class IGenericRepository<T extends QueryDeepPartialEntity<Object
 		this.entityRepository.save(data, {chunk: 1000}).catch(e => console.log(e));
 	}
 
-	protected insertOne(data: T){
-		this.entityRepository
+	protected async insertOne(data: T){
+		return this.entityRepository
 			.createQueryBuilder()
 		  	.insert()
 		  	.values(data)
@@ -46,8 +46,8 @@ export abstract class IGenericRepository<T extends QueryDeepPartialEntity<Object
 			.catch(e => console.log(e.detail));
 	}
 
-	protected deleteOne(spec: any){
-		this.entityRepository
+	protected async deleteOne(spec: any){
+		return this.entityRepository
 			.createQueryBuilder()
 			.delete()
 			.where(spec)
@@ -55,8 +55,8 @@ export abstract class IGenericRepository<T extends QueryDeepPartialEntity<Object
 			.catch(e => console.log(e.detail));
 	}
 
-	protected updateOne(spec: any, update: any){
-		this.entityRepository
+	protected async updateOne(spec: any, update: any){
+		return this.entityRepository
 			.createQueryBuilder()
 			.update()
 			.set(update)

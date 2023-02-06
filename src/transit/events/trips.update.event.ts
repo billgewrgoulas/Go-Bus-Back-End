@@ -1,11 +1,12 @@
 import { TripRepository } from 'src/repositories/trip.repository';
-import { Booking } from '../entities/tripStatus';
+import { DataService } from '../services/data.service';
+import { Booking } from 'src/user/entities/booking.entity';
 
 export class UpdateTrips{
 
     constructor(
         private bookings: Booking[], 
-        private tripRepo: TripRepository, 
+        private data: DataService, 
         private value: number
     ){}
 
@@ -13,8 +14,8 @@ export class UpdateTrips{
         return this.bookings;
     }
 
-    public get repo(): TripRepository{
-        return this.tripRepo;
+    public get repo(): DataService{
+        return this.data;
     }
 
     public get getValue(): number{

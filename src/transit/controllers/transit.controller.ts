@@ -8,6 +8,7 @@ import { DataService } from '../services/data.service';
 import { Plan } from '../transitDtos/itinerary.dto';
 import { RouteInfoDto } from '../transitDtos/route.dto';
 import { ScheduleDetailsDto } from '../transitDtos/schedule.details';
+import { Point } from '../entities/point.entity';
 
 @Controller('transitAPI')
 export class TransitController {
@@ -26,6 +27,12 @@ export class TransitController {
         return this.data.stops.getStops();
     }
 
+    @Get('/routes')
+    @Header('Content-Type', 'application/json')
+    public getRoutes(): Promise<Route[]>{
+        return this.data.routes.getRoutes();
+    }
+
     @Get('/lineRoutes/:id')
     @Header('Content-Type', 'application/json')
     public getLineRoutes(@Param('id') id: string): Promise<Route[]>{
@@ -35,22 +42,27 @@ export class TransitController {
     @Get('/routeInfo/:code')
     @Header('Content-Type', 'application/json')
     public async getRouteStops(@Param('code') code: string): Promise<RouteInfoDto>{
-
-        const resolve = await Promise.all([
-            this.data.stops.getRouteStops(code),
-            this.data.points.getRoutePoints(code)
-        ]);
-
-        return new RouteInfoDto(resolve[0], resolve[1], code);
+        const points: Point[] = await this.data.points.getRoutePoints(code)        
+        return new RouteInfoDto([], points, code);
     }
 
     @Get('/routeSchedules/:code')
     @Header('Content-Type', 'application/json')
     public async getRouteSchedule(@Param('code') code: string): Promise<ScheduleDetailsDto>{
-
         const schedules: Schedule[] = await this.data.schedule.getRouteSchedules(code);
-
         return new ScheduleDetailsDto(schedules, code);
+    }
+
+    @Get('/routeAndStops')
+    @Header('Content-Type', 'application/json')
+    public async getRoutesAndStops(): Promise<{routes: Route[], stops: Stop[]}>{
+        
+        const promise: [Route[], Stop[]] = await Promise.all([
+            this.data.routes.getRoutes(),
+            this.data.stops.getStops()
+        ]);
+
+        return {routes: promise[0], stops: promise[1]};
     }
 
     @Post('/getPaths')
@@ -61,7 +73,7 @@ export class TransitController {
 
     @Get('/stopRoutes/:code')
     @Header('Content-Type', 'application/json')
-    public getStopRoutes(@Param('code') code: string): Promise<Route[]>{
+    public getStopRoutes(@Param('code') code: string): Promise<string[]>{
         return this.data.routes.getStopRoutes(code);
     }
 

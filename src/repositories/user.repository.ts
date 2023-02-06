@@ -9,7 +9,10 @@ import { UserRoute } from "src/user/entities/userRoute.entity";
 @Injectable()
 export class UserRepository extends IGenericRepository<User>{
 
-    constructor(@InjectRepository(User) userRepo: Repository<User>, @InjectDataSource() db: DataSource){
+    constructor(
+        @InjectRepository(User) userRepo: Repository<User>, 
+        @InjectDataSource() db: DataSource)    
+    {
         super(userRepo, db);
     }
 
@@ -17,7 +20,7 @@ export class UserRepository extends IGenericRepository<User>{
         return super.getOne({email: email});
     }
 
-    public override insertOne(data: User) {
+    public override async insertOne(data: User) {
         super.insertOne(data);
     }
 

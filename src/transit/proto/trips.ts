@@ -1,9 +1,12 @@
-import { Line } from "../entities/line.entity";
 import { Schedule } from "../entities/schedule.entity";
-import { Stop } from "../entities/stop.entity";
 import { DataService } from "../services/data.service";
-import { LiveUpdatesService } from "../services/live.updates.service";
-import { ArrivalDto } from "../transitDtos/arrival.dto";
+
+/*  IN THIS FILE WE WILL BE CREATING A TRIP UPDATES PROTOBUF AND SERVE IT TO OTP 
+    OTP MAPS THIS FILE TO THE STATIC SHCEDULE THAT IS INDICATED BY THE TRIP_ID AND UPDATES 
+    IN REAL TIME THE ARRIVAL AND DEPARTURES TIMES BASED ON THE PREDICTIONS IN THE PROTOBUF
+    HOWEVER IN OUR CASE WE DO NOT KNOW THE TRIP_ID OF EACH ACTIVE BUS. AS A RESULT WE WILL USE SOME
+    TEST FILES ONLY AND SKIP THIS FEATURE FOR NOW
+*/
 
 export interface FeedHeader{
     gtfsRealtimeVersion: string;
@@ -48,88 +51,38 @@ export interface TripDescriptor {
 
 export default class Trip{
 
-    private defaultTrip = {};
-    private live: LiveUpdatesService;
     private data: DataService;
+    private trip_ids: number[] = [159613, 158744];
 
-    private trip: TripDescriptor = {tripId: '1', routeId: '2', directionId: 0, startDate: '1', startTime: '2'};
-    private header: FeedHeader = {gtfsRealtimeVersion: '2', incrementality: 1, timestamp: 2};
-    private arrival: StopTimeEvent = {time: 1, delay: 2};
-    private departure: StopTimeEvent = {time: 2, delay: 1};
-    private stopTimeUpdate: StopTimeUpdate = {stopId: '1', stopSequence: 2, arrival: this.arrival, departure: this.departure};
-    private tripUpdate: TripUpdate = {trip: this.trip, stopTimeUpdate: [this.stopTimeUpdate, this.stopTimeUpdate]};
-    private entity: FeedEntity = {id: '1', tripUpdate: this.tripUpdate};
-    private message: FeedMessage = {header: this.header, entity: [this.entity, this.entity]};
-
-    constructor(live: LiveUpdatesService, data: DataService){
-        this.live = live;
+    constructor(data: DataService){
         this.data = data;
     }
 
-    public get getMessage(): FeedMessage{
-        return this.message;
-    }
-
-    public async updateContructor(day: number){
-        
-        const lines: Line[] = await this.data.lines.getLines();
-
-        for (const line of lines) {
-
-            const { data } = <any>await this.live.getLiveData(line.name, 'lines/live/');
-
-            if(data){
-                
-                let stops: Stop[] = [];
-                for (const e of data) {
-                    stops = await this.data.stops.getRouteStops(e.routeCode);
-                }
-
-                //for each stop of every route
-                for (const stop of stops) {
-
-                    const {data} = <any>await this.live.getLiveData(stop.code, 'stops/live/');
-
-                    const tripUpdate: TripUpdate = {trip: undefined, stopTimeUpdate: []};
-                    const trips: Schedule[] = await this.data.schedule.getTrips(data.routeCode, day, stop.code);
-                    //for each arrival to the stop
-                    if(data.vehicles){
-
-                        for(const e of data.vehicles){
-
-                            const trips: Schedule[] = await this.data.schedule.getTrips(e.routeCode, day, stop.code);
-
-                            for (const trip of trips) {
-                                
-                                
-                            }
-                            
-                        }
-                    }
-
-
-
-
-                }
-
-
-            }   
-            
-        }
-    }
-
-    private createtMessage(sch: Schedule, arr: ArrivalDto, stopCode: string, seq: number){
-        const trip: TripDescriptor = {tripId: sch.trip_id + '', routeId: sch.line, directionId: 0};
+    public async updateContructor(){
+  
         const header: FeedHeader = {gtfsRealtimeVersion: '2', incrementality: 1, timestamp: Date.now()};
+        const message: FeedMessage = {header: header, entity: []};
 
-        const arrival: StopTimeEvent = {time: 1, delay: 0};
-        const departure: StopTimeEvent = {time: Date.now() + Math.floor(arr.departureMins/60)};
+        for (let i = 0; i < this.trip_ids.length; i++) {
+            const sch: Schedule[] = await this.data.schedule.getTripOne(this.trip_ids[i]);
+            const tripDesc: TripDescriptor = {tripId: sch[0].trip_id.toString(), routeId: sch[0].line, directionId: 0};
+            const tripUpdate: TripUpdate = {trip: tripDesc, stopTimeUpdate: []};
+            const entity: FeedEntity = {id: i + '', tripUpdate: tripUpdate};
 
-        const stopTimeUpdate: StopTimeUpdate = {stopId: stopCode, stopSequence: seq, departure: departure};
+            for (let j = 0; j < sch.length; j++) {
+                const arr: number = sch[j].tripTimeMinute + Date.now() + 1;
+                const dep: number = sch[j].tripTimeMinute + Date.now() + 2;
+                const arrival: StopTimeEvent = {time: arr};
+                const departure: StopTimeEvent = {time: dep};
+                const stopTimeUpdate: StopTimeUpdate = {stopId: sch[j].stopCode, stopSequence: j, arrival: arrival, departure: departure};
+                tripUpdate.stopTimeUpdate.push(stopTimeUpdate);
+            }
+
+            entity.tripUpdate = tripUpdate;
+            message.entity.push(entity);
+        }
         
-        const tripUpdate: TripUpdate = {trip: this.trip, stopTimeUpdate: [this.stopTimeUpdate, this.stopTimeUpdate]};
-        const entity: FeedEntity = {id: '1', tripUpdate: this.tripUpdate};
-        const message: FeedMessage = {header: this.header, entity: [this.entity, this.entity]};
+        return message;
     }
 }
   

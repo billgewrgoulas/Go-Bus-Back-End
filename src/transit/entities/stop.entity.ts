@@ -25,4 +25,6 @@ export class Stop{
     @Column('simple-array', {nullable: true})
     public lines: string[];
 
+    public routes: string[];
+
 }

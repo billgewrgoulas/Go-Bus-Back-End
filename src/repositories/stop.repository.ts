@@ -28,7 +28,7 @@ export class StopRepository extends IGenericRepository<Stop>{
 
     public async getSaved(user: string): Promise<Stop[]>{
         return this.db.query(`
-            SELECT s."id", s."code", s."latitude", s."longitude", s."desc", s."desc_eng", s."lines"
+            SELECT s."code"
             FROM transit_data.user_stop AS us
             INNER JOIN transit_data.stop AS s
             ON s."code"=us."stop_code"

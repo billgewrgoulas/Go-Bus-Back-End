@@ -10,18 +10,22 @@ export class SavedService {
 
     public insertStop(code: string, user: string){
         this.repo.insertStop(code, user);
+        return {msg: 'Stop saved succesfully'};
     }
 
     public insertRoute(user: string, code: string){
         this.repo.insertRoute(code, user);
+        return {msg: 'Route saved succesfully'};
     }
 
     public deleteRoute(user: string, code: string){
         this.repo.deleteRoute(code, user);
+        return {msg: 'Route deleted succesfully'};
     }
 
     public deleteStop(code: string, user: string){
         this.repo.deleteStop(code, user);
+        return {msg: 'Stop deleted succesfully'};
     }
 
     public getStops(user: string): Promise<string[]>{

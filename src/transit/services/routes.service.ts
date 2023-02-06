@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Route } from '../entities/route.entity';
 import { RouteRepository } from '../../repositories/route.repository';
+import { Code } from 'typeorm';
 
 @Injectable()
 export class RouteService {
@@ -19,12 +20,14 @@ export class RouteService {
         return this.repo.getRoutesByLineId(lineId);
     }
 
-    public getStopRoutes(stopCode: string): Promise<Route[]>{
-        return this.repo.getStopRoutes(stopCode);
+    public async getStopRoutes(stopCode: string): Promise<string[]>{
+        const routes: Route[] = await this.repo.getStopRoutes(stopCode);
+        return routes.map(r => r.code);
     }
 
-    public getSaved(user: string): Promise<Route[]>{
-        return this.repo.getSaved(user);
+    public async getSaved(user: string): Promise<string[]>{
+        const routes: Route[] = await this.repo.getSaved(user);
+        return routes.map(r => r.code);
     }
 
     public async insert(routes: Route[]): Promise<void>{

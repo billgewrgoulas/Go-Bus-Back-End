@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany, PrimaryColumn, Index, ManyToMany, JoinTable, JoinColumn, PrimaryGeneratedColumn} from 'typeorm';
+import { Column, Entity, PrimaryColumn, Index, PrimaryGeneratedColumn} from 'typeorm';
 
 @Entity()
 export class Schedule{

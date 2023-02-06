@@ -3,21 +3,34 @@ import { DBUpdateService } from '../services/db.update.service';
 import { Route } from '../entities/route.entity';
 import { Schedule } from '../entities/schedule.entity';
 import { DataService } from '../services/data.service';
-import { Trip } from '../entities/tripStatus';
+import { Trip } from '../entities/trip.entity';
 import { Line } from '../entities/line.entity';
 import { Stop } from '../entities/stop.entity';
 import { RouteStop } from '../entities/routeStops.entity';
 import { Point } from '../entities/point.entity';
-import { NewSchedule } from '../entities/newSchedule.entity';
+import { Cron, Interval } from '@nestjs/schedule';
 const greekUtils = require('greek-utils');
 
+
 @Controller('update')
-export class DBupdateController {
+export class Scheduler {
 
     constructor(
 		private data: DataService,
         private db: DBUpdateService
 	){}
+
+    //@Interval(100000)
+    public async scheduler(){
+        await this.populateLines();
+        await this.populateRoutes();
+        await this.populateStops();
+        await this.populatePaths();
+        await this.populateRouteStops();
+        await this.populateSchedule();
+        await this.fixScheduleTimes();
+        await this.populateTrips();
+    }
 
     @Get('/lines')
     @Header('Content-Type', 'application/json')
@@ -113,7 +126,7 @@ export class DBupdateController {
 
     @Get('/routeStops')
     @Header('Content-Type', 'application/json')
-    public async populateStopsRoute(){
+    public async populateRouteStops(){
 
         const routes: Route[] = await this.data.routes.getRoutes();
 
@@ -140,12 +153,12 @@ export class DBupdateController {
 
     @Get('/updateTrips')
     @Header('Content-Type', 'application/json')
-    public async populateTrips(): Promise<string>{
+    public async populateSchedule(): Promise<string>{
 
         const routes: Route[] = await this.data.routes.getRoutes();
 
         for (const route of routes) {
-            const tripsPromise = await <any>this.db.getRouteTrips(route.code);
+            const tripsPromise = await <any>this.db.getScedule(route.code);
             if(tripsPromise){
                 const trips: Schedule[] = [];
                 for (const trip of tripsPromise.data) {
@@ -164,7 +177,7 @@ export class DBupdateController {
     }
 
     @Get('/fix')
-    public async fixSchedule(): Promise<string>{
+    public async fixScheduleTimes(): Promise<string>{
 
         const ids: any[] = await this.data.schedule.getIds();
 
@@ -192,8 +205,8 @@ export class DBupdateController {
             }
 
             if(times.length > 0){
-                let minute = new_trip[0].tripTimeMinute;
-                let hour = new_trip[0].tripTimeHour;
+                let minute = +new_trip[0].tripTimeMinute;
+                let hour = +new_trip[0].tripTimeHour;
                 for (let i = 1; i < new_trip.length; i++) {
 
                     if(i >= times.length){
@@ -221,14 +234,22 @@ export class DBupdateController {
                 console.log(i);
                 i++;
             }
-
         }
 
         return 'ok';
     }
 
+    @Get('/replace')
+    public async replace(): Promise<string>{
+
+        const schedules: Schedule[] = await this.data.ns.getAll();
+        await this.data.schedule.insertTrips(schedules);
+        return 'ok';
+
+    }
+
     @Get('/populateTrips')
-    public async populate(): Promise<string>{
+    public async populateTrips(): Promise<string>{
         const schedules: Schedule[] = await this.data.schedule.getAll();
         const trips: Trip[] = [];
 
@@ -250,23 +271,8 @@ export class DBupdateController {
         return 'ok';
     }
 
-    @Get('/newSchedule')
-    public async newSchedules(): Promise<string>{
-
-        const schedules: NewSchedule[] = await this.data.ns.getAll();
-        await this.data.schedule.insertTrips(schedules);
-
-        return 'ok';
-    }
-
     private sleep(duration: number): Promise<void>{
         return new Promise((resolve) => setTimeout(resolve, duration));
     }
-
-    private r(min: number, max: number) {
-        min = Math.ceil(min);
-        max = Math.floor(max);
-        return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
-      }
 
 }

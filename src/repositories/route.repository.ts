@@ -31,7 +31,7 @@ export class RouteRepository extends IGenericRepository<Route>{
 
     public async getSaved(user: string): Promise<Route[]>{
         return this.db.query(`
-            SELECT r."id", r."code", r."lineId", r."desc", r."desc_eng", r."stopCodes"
+            SELECT r."code"
             FROM transit_data.user_route AS ur
             INNER JOIN transit_data.route AS r
             ON r."code"=ur."route_code"
@@ -51,7 +51,7 @@ export class RouteRepository extends IGenericRepository<Route>{
 
     public async getStopRoutes(stopCode: string): Promise<Route[]>{
         return this.db.query(`
-            SELECT r."code", r."lineId", r."direction", r."desc", r."desc_eng", r."stopCodes", l."name"
+            SELECT r."code"
             FROM transit_data.route AS r
             INNER JOIN transit_data.line AS l
             ON r."lineId"=l."id"

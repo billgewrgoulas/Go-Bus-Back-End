@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectDataSource, InjectRepository } from "@nestjs/typeorm";
-import { Trip } from "src/transit/entities/tripStatus";
+import { Trip } from "src/transit/entities/trip.entity";
 import { DataSource, Repository, UpdateResult } from "typeorm";
 import { IGenericRepository } from "./generic.repository";
 
@@ -11,20 +11,20 @@ export class TripRepository extends IGenericRepository<Trip>{
         super(tripRepo, dataSource);
     }
 
-    public updateEmbarkation(trip_id: number, stopCode: string, value: number){
+    public async updateEmbarkation(trip_id: number, stopCode: string, value: number): Promise<any>{
         const spec: any = {trip_id: trip_id, stopCode: stopCode};
         const update: any = {embarkation: () => `embarkation + ${value}`};
-        super.updateOne(spec, update);
+        return super.updateOne(spec, update);
     }
 
-    public updateDebarkation(trip_id: number, stopCode: string, value: number){
+    public async updateDebarkation(trip_id: number, stopCode: string, value: number): Promise<any>{
         const spec: any = {trip_id: trip_id, stopCode: stopCode};
         const update: any = {debarkation: () => `debarkation + ${value}`};
-        super.updateOne(spec, update);
+        return super.updateOne(spec, update);
     }
 
-    public override getOne(trip_id: number): Promise<Trip | void> {
-        return super.getOne({trip_id: trip_id});
+    public getTrip(trip_id: number): Promise<Trip[]> {
+        return super.get({trip_id: trip_id});
     }
 
     public override async insert(data: Trip[]): Promise<void> {
@@ -61,13 +61,25 @@ export class TripRepository extends IGenericRepository<Trip>{
         return this.db.query(query).catch(e => console.log(e));
     }
 
-    public async updateOccupation(stopCodes: string[], value: number, trip_id: number): Promise<void>{
-        await this.entityRepository
+    public async updateOccupation(stopCodes: string[], value: number, trip_id: number): Promise<any>{
+        return this.entityRepository
             .createQueryBuilder()
             .update()
             .set({occupied: () => `occupied + ${value}`})
             .where('"stopCode" IN (:...codes)', {codes: stopCodes})
             .andWhere({trip_id: trip_id})
+            .execute()
+            .catch(e => console.log(e));
+    }
+
+    public async getMaxOccupation(stops: string[], trip_id: number): Promise<Trip[]>{
+        return this.entityRepository
+            .createQueryBuilder()
+            .select(['*'])
+            .where('"stopCode" IN (:...codes)', {codes: stops})
+            .andWhere({trip_id: trip_id})
+            .orderBy('occupied', 'DESC')
+            .limit(1)
             .execute()
             .catch(e => console.log(e));
     }

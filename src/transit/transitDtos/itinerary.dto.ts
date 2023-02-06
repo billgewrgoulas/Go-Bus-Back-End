@@ -49,8 +49,19 @@ export class Vertex{
     }
 
     private edit(time: number): string{
-        const date = new Date(time).toLocaleTimeString().split(":");
-        return date[0] + ':' + date[1];
+        const date: Date = new Date(time);
+        let hours: string = date.getHours().toString();
+        let minutes: string = date.getMinutes().toString();
+
+        if(+hours < 10){
+            hours = '0' + hours;
+        }
+
+        if(+minutes < 10){
+            minutes = '0' + minutes;
+        }
+
+        return hours + ':' + minutes;
     }
 
 }
@@ -119,8 +130,19 @@ export class Leg{
     }
 
     private edit(time: number): string{
-        const date = new Date(time).toLocaleTimeString().split(":");
-        return date[0] + ':' + date[1];
+        const date: Date = new Date(time);
+        let hours: string = date.getHours().toString();
+        let minutes: string = date.getMinutes().toString();
+
+        if(+hours < 10){
+            hours = '0' + hours;
+        }
+
+        if(+minutes < 10){
+            minutes = '0' + minutes;
+        }
+
+        return hours + ':' + minutes;
     }
 
     public setFlexGrow(totalDuration: number){
@@ -154,12 +176,23 @@ export class Itinerary{
         this.walkTime = Math.floor(it.walkTime/60);
         this.arrivalDelay = it.arrivalDelay;
         this.departureDelay = it.departureDelay;
-        this.serviceDate = it.serviceDate;
     }
 
     private edit(time: number): string{
-        const date = new Date(time).toLocaleTimeString().split(":");
-        return date[0] + ':' + date[1];
+        const date: Date = new Date(time);
+        let hours: string = date.getHours().toString();
+        let minutes: string = date.getMinutes().toString();
+
+        if(+hours < 10){
+            hours = '0' + hours;
+        }
+
+        if(+minutes < 10){
+            minutes = '0' + minutes;
+        }
+
+        this.serviceDate = date.toLocaleDateString();
+        return hours + ':' + minutes;
     }
 }
 

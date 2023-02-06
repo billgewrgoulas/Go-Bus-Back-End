@@ -16,7 +16,11 @@ var protobuf = require('protobufjs')
 @Controller('live')
 export class LiveUpdatesController {
 
-    constructor(private liveService: LiveUpdatesService, private data: DataService){}
+    private trips: Trip;
+
+    constructor(private liveService: LiveUpdatesService, private data: DataService){
+        this.trips = new Trip(this.data);
+    }
 
     @Get('/stops/:code')
     @Header('Content-Type', 'application/json')
@@ -41,42 +45,18 @@ export class LiveUpdatesController {
         return arrivals;
     }
 
-    //@Interval(30000)
-    public async saveLiveData(): Promise<void>{
+    @Get('/protobuf')
+    @Header('Content-Type', 'application/protobuf')
+    public async getProtobuf(@Res() response: Response): Promise<void> {
+        
+        const proto = await this.trips.updateContructor();
+        const root = await protobuf.load("./src/transit/proto/trips.proto");
+        const testMessage = root.lookupType("tripspackage.FeedMessage");
+        const message = testMessage.create(proto);
+        const encoded = testMessage.encode(message).finish();
 
-        const lineCodes: string[] = (await this.data.lines.getLines()).map(line => line.name);
-
-        for (const line of lineCodes) {
-            const buses: ArrivalDto[] = await this.getLineBuses(line);
-
-            for (const bus of buses) {
-
-                const stops: Stop[] = await this.data.stops.getRouteStops(bus.routeCode);
-                const prom: Promise<any>[] = stops.map(stop => this.liveService.liveDataBuilder(stop.code));
-                const res: any[] = await Promise.all(prom);
-                const liveData: LiveData[] = [];
-                
-                for (let i = 0; i < stops.length; i++) {
-
-                    for(let j = 0; j < res[i].length; j++){
-
-                        const data: LiveData = {...res[i][j]};
-                        data.stopCode = stops[i].code;
-                        data.stopLat = stops[i].latitude;
-                        data.stopLng = stops[i].longitude;
-                        data.vehicleLat = res[i][j].latitude;
-                        data.vehicleLng = res[i][j].longitude;
-
-                        if(+data.vehicleLat > 0 && +data.vehicleLng > 0){
-                            liveData.push(data);
-                        }
-                        
-                    }
-                }
-                
-                await this.data.live.insert(liveData);
-            }
-        }
-    }
+        response.send(encoded);
+    }  
+    
 }
 

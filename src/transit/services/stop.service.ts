@@ -27,8 +27,9 @@ export class StopService {
         return this.repo.get(spec);
     }
 
-    public getSaved(user: string): Promise<Stop[]>{
-        return this.repo.getSaved(user);
+    public async getSaved(user: string): Promise<string[]>{
+        const codes: Stop[] = await this.repo.getSaved(user);
+        return codes.map(s => s.code);
     }
 
     public async insert(stops: Stop[]){

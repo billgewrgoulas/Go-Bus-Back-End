@@ -1,19 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
-import { lastValueFrom, of } from 'rxjs';
+import { lastValueFrom } from 'rxjs';
 import { DataService } from './data.service';
 import { ArrivalDto } from '../transitDtos/arrival.dto';
-import { Trip } from '../entities/tripStatus';
-import { Schedule } from '../entities/schedule.entity';
 import { Stop } from '../entities/stop.entity';
-import { Interval } from '@nestjs/schedule';
 
 
 @Injectable()
 export class LiveUpdatesService {
 
-    private readonly token: string = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NzQwMzY5Mjd9.Fj_aF6RzTo-77rYc9OuulpzWwcahdtGe-FU5v2-mCGg';
-    private readonly uri: string = 'https://rest.citybus.gr/api/v1/el/106/';
+    private readonly token: string = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NzU4NTEwMzJ9.k_Zny_XOg1885v7WJDZf6oAXhqjaQ1AQyUGyACxgBfc';
+    private readonly uri: string = 'https://dev-rest.citybus.gr/api/v1/el/106/';
     
     constructor(private http: HttpService, private data: DataService){}
 
@@ -42,6 +39,8 @@ export class LiveUpdatesService {
         for (const arrival of arrivals) {
 
             if(+arrival.latitude == 0 || +arrival.longitude == 0){
+                arrival.arrivalMins = 0;
+                arrival.arrivalSeconds = 0;
                 continue;
             }
 
@@ -59,8 +58,8 @@ export class LiveUpdatesService {
                 continue;
             }
 
-            const arrivalMins = Math.floor(it.duration / 60);
-            const arrivalSeconds = it.duration - arrivalMins * 60;
+            let arrivalMins = Math.floor(it.duration / 60);
+            let arrivalSeconds = it.duration - arrivalMins * 60; 
 
             arrival.arrivalMins = arrivalMins;
             arrival.arrivalSeconds = arrivalSeconds;
