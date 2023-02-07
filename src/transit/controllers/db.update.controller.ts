@@ -194,6 +194,11 @@ export class Scheduler {
                 const s = stops[i].latitude + ',' + stops[i].longitude;
                 const e = stops[i + 1].latitude + ',' + stops[i + 1].longitude;
                 const plan: any = await this.data.otp.getBus(s, e);
+
+                if(!plan){
+                    continue;
+                }
+
                 const it = plan.data.plan.itineraries[0];
 
                 if(!it){

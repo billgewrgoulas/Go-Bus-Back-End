@@ -27,8 +27,13 @@ export class OTPService {
 
     public async getBookingPlan(booking: Booking): Promise<Plan>{
 
-        const { data } = await this.getTrips(booking.slug);
-        const plan: Plan = <Plan>data.plan;
+        const otp = await this.getTrips(booking.slug);
+
+        if(!otp){
+            return <Plan>{}
+        }
+        
+        const plan: Plan = <Plan>otp.data.plan;
         const new_plan: Plan = await this.planBuilder(plan, '');
         const itineraries: Itinerary[] = [];
         const legs: Leg[] = [];
@@ -65,8 +70,13 @@ export class OTPService {
 
         const otpParams: OTPParams = new OTPParams(state);
         const queryString: string = otpParams.buildQueryParams();
-        const { data } = await <any>this.getTrips(queryString);
-        const plan: Plan = <Plan>data.plan;
+        const otp = await <any>this.getTrips(queryString);
+
+        if(!otp){
+            return <Plan>{}
+        }
+
+        const plan: Plan = <Plan>otp.data.plan;
         const new_plan: Plan = await this.planBuilder(plan, queryString);
 
         new_plan.from.name = state.start[1];
