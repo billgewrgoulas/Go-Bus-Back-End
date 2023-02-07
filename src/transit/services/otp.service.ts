@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
 import { OTPParams, TripState } from '../transitDtos/trip.state';
@@ -16,13 +16,13 @@ export class OTPService {
     constructor(private http: HttpService, private tripRepo: TripRepository){}
 
     public async getTrips(slug: string): Promise<any>{
-        return lastValueFrom(this.http.get(this.uri + slug)).catch(e => console.log(e));
+        return lastValueFrom(this.http.get(this.uri + slug)).catch(e => console.log('otp out of reach'));
     }
 
     public async getBus(start: string, end: string): Promise<any>{
                 
         const url: string = `http://localhost:8080/otp/routers/default/plan?fromPlace=${start}&toPlace=${end}&time=1:19pm&date=01-09-2023&mode=CAR_PICKUP%2CTRANSIT&arriveBy=false&wheelchair=false&showIntermediateStops=true&debugItineraryFilter=false&locale=en`;
-        return lastValueFrom(this.http.get(url)).catch(e => console.log(e));
+        return lastValueFrom(this.http.get(url)).catch(e => console.log('otp out of reach'));
     }
 
     public async getBookingPlan(booking: Booking): Promise<Plan>{
@@ -30,9 +30,10 @@ export class OTPService {
         const otp = await this.getTrips(booking.slug);
 
         if(!otp){
-            return <Plan>{}
+            this.throwError('otp out of reach');
+            return;
         }
-        
+
         const plan: Plan = <Plan>otp.data.plan;
         const new_plan: Plan = await this.planBuilder(plan, '');
         const itineraries: Itinerary[] = [];
@@ -73,7 +74,8 @@ export class OTPService {
         const otp = await <any>this.getTrips(queryString);
 
         if(!otp){
-            return <Plan>{}
+            this.throwError('otp out of reach');
+            return;
         }
 
         const plan: Plan = <Plan>otp.data.plan;
@@ -135,6 +137,12 @@ export class OTPService {
         new_plan.occupancy = occupancy;
         return new_plan;
     }
+
+    public throwError(msg: string){
+        throw new HttpException({
+          status: HttpStatus.FORBIDDEN, error: msg
+        }, HttpStatus.FORBIDDEN);
+      }
 
 }
 
