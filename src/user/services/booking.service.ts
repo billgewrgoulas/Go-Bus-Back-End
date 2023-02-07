@@ -39,10 +39,12 @@ export class BookingService {
 
             if(exists){
                 this.throwError('Το δρομολόγιο ειναι ήδη κρατημένο');
+                return;
             }
 
             if(maxOcc >= +trip[0].totalSeats){
                 this.throwError('Δεν υπάρχει διαθέσιμη θέση');
+                return;
             }
 
             this.checkOverlap(ub, booking);
