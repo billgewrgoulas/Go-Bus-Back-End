@@ -11,17 +11,17 @@ export class TripUpdatesListener{
     constructor(private io: TransitGateWay){}
 
     @OnEvent('trips.update', {async: true})
-    public bookingCreated(event: UpdateTrips){
+    public async bookingCreated(event: UpdateTrips): Promise<void>{
         
         for (const booking of event.getBookings) {
-            this.updateDb(event, booking);
+            await this.updateDb(event, booking);
         }
 
         this.io.updateOccupancy(event.getValue, event.getBookings.map(b => b.trip_id));
     }
 
     @OnEvent('booking.deleted', {async: true})
-    public async bookingDeleted(event: UpdateTrips){
+    public async bookingDeleted(event: UpdateTrips): Promise<void>{
 
         const booking: Booking = event.getBookings[0];
         const trip: Trip[] = await event.repo.trips.get(+booking.trip_id);
@@ -34,7 +34,7 @@ export class TripUpdatesListener{
         this.io.updateOccupancy(event.getValue, event.getBookings.map(b => b.trip_id));
     }
 
-    private async updateDb(event: UpdateTrips, booking: Booking){
+    private async updateDb(event: UpdateTrips, booking: Booking): Promise<void>{
         await event.repo.trips.updateEmbarkation(booking.trip_id, booking.startStop, event.getValue);
         await event.repo.trips.updateDebarkation(booking.trip_id, booking.endStop, event.getValue);
         await event.repo.trips.updateOccupation(booking.stopCodes, event.getValue, booking.trip_id);

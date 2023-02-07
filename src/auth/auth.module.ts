@@ -15,7 +15,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     JwtModule.register({
       secret: jwtConstants.secret,
       signOptions: { 
-        expiresIn: '999 years',
+        expiresIn: '7d',
     },
   })],
   providers: [LocalStrategy, JwtStrategy, AuthService, AuthRepository],

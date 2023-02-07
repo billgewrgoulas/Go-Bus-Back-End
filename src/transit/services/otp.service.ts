@@ -33,12 +33,12 @@ export class OTPService {
         const itineraries: Itinerary[] = [];
         const legs: Leg[] = [];
 
-        new_plan.itineraries.forEach(it => {
-            it.legs.forEach(leg => {
+        for (const it of new_plan.itineraries) {
+            for (const leg of it.legs ) {
                 if( leg.mode == 'TRAM' && 
-                    +leg.tripId == booking.trip_id && 
-                    leg.from.stopCode == booking.startStop &&
-                    leg.to.stopCode == booking.endStop
+                    +leg.tripId === +booking.trip_id && 
+                    leg.from.stopCode === booking.startStop &&
+                    leg.to.stopCode === booking.endStop
                 ){
                     legs.push(leg);
                     it.duration = leg.duration;
@@ -47,15 +47,17 @@ export class OTPService {
                     new_plan.from = leg.from;
                     new_plan.to = leg.to;
                     itineraries.push(it);
+                    new_plan.from.name = booking.start;
+                    new_plan.to.name = booking.end;
+                    new_plan.itineraries = itineraries;
+                    it.legs = legs;
+                    return new_plan;
                 }
-            });
-            it.legs = legs;
-        });
+            }
+        }
 
-        new_plan.from.name = booking.start;
-        new_plan.to.name = booking.end;
-        new_plan.itineraries = itineraries;
-        
+        new_plan.occupancy = {}
+        new_plan.itineraries = [];
         return new_plan;
     }
 
@@ -104,15 +106,17 @@ export class OTPService {
         }
 
         const new_plan: Plan = new Plan(plan, itineraries, slug);   
-        const occupancy: any = {};  
-
-        for (const it of new_plan.itineraries) {
-            for (const leg of it.legs) {
-                leg.setFlexGrow(it.duration);
-                if(leg.mode == 'TRAM'){
-                    const codes: string[] = [leg.from.stopCode, ...leg.intermediateStops.map(s => s.stopCode)];
-                    const trip: Trip[] = await this.tripRepo.getMaxOccupation(codes, +leg.tripId);
-                    occupancy[leg.tripId] = trip[0].totalSeats - trip[0].occupied;
+        const occupancy: any = {}; 
+        
+        if(slug !== ''){
+            for (const it of new_plan.itineraries) {
+                for (const leg of it.legs) {
+                    leg.setFlexGrow(it.duration);
+                    if(leg.mode == 'TRAM'){
+                        const codes: string[] = [leg.from.stopCode, ...leg.intermediateStops.map(s => s.stopCode)];
+                        const trip: Trip[] = await this.tripRepo.getMaxOccupation(codes, +leg.tripId);
+                        occupancy[leg.tripId] = trip[0].totalSeats - trip[0].occupied;
+                    }
                 }
             }
         }

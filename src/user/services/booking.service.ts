@@ -74,23 +74,17 @@ export class BookingService {
     private checkOverlap(bookings: Booking[], booking: Booking){
 
         const today: Booking[] = [booking, ...bookings.filter(b => b.date === booking.date)];
-        const intervals: number[][] = [];
+        let intervals: number[][] = [];
 
         for(let i = 0; i < today.length; i++){
-            const travel: string[] = today[i].travel.split(":");
-            const arrive: string[] = today[i].arrive.split(":");
-            const start: number = +travel[0] * 60 + +travel[1];
-            const end: number = +arrive[1] * 60 + +arrive[1];
-
-            if(start > end){
-                intervals.push([end, start]);
-            }else{
-                intervals.push([start, end]);
-            }
-
+            const travel: number[] = today[i].travel.split(":").map(n => +n);
+            const arrive: number[] = today[i].arrive.split(":").map(n => +n);
+            const start: number = 60 * travel[0] + travel[1];
+            const end: number = 60 * arrive[0] + arrive[1];
+            intervals.push([start, end]);
         }
 
-        intervals.sort((a, b) => a[0] - b[0]);
+        intervals = intervals.sort((a, b) => a[0] - b[0]);
         for(let i = 0; i < intervals.length - 1; i++){
             if(intervals[i][1] > intervals[i + 1][0]){
                 this.throwError('Η κράτηση δεν μπορεί να πραγματοποιθεί γιατί υπάρχει άλλο προγραμματισμένο δρομολόγιο αυτήν την ώρα');
