@@ -9,7 +9,7 @@ export const DBconnectionProperties: TypeOrmModuleOptions = {
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     entities: [],
-    synchronize: true,
+    synchronize: false,
     autoLoadEntities: true,
     schema: process.env.DB_SCHEMA
 };
