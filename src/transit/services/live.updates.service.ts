@@ -18,7 +18,7 @@ export class LiveUpdatesService {
         const action: string = slug + code;
         return await lastValueFrom(this.http.get(this.uri + action, {withCredentials: false, headers:{
             Authorization: 'Bearer ' + this.token,
-        }})).catch(e => {});
+        }})).catch(e => console.log('remote api cant be reached'));
     }
 
     public async liveDataBuilder(stopCode: string): Promise<ArrivalDto[]>{
