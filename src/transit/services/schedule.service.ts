@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Schedule } from '../entities/schedule.entity';
 import { ScheduleRepository } from '../../repositories/schedule.repository';
+import { Plan } from '../transitDtos/itinerary.dto';
+import { Booking } from 'src/user/entities/booking.entity';
 
 @Injectable()
 export class ScheduleService {

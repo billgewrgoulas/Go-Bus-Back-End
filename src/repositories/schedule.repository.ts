@@ -23,7 +23,8 @@ export class ScheduleRepository extends IGenericRepository<Schedule>{
     public async getIds(): Promise<any[]> {
         return this.db.query(`
             SELECT DISTINCT trip_id
-            FROM transit_data.schedule;
+            FROM transit_data.schedule
+            ORDER BY s."id" ASC;
         `).catch(e => console.log(e));
     }
 
@@ -31,7 +32,8 @@ export class ScheduleRepository extends IGenericRepository<Schedule>{
         return this.db.query(`
             SELECT *
             FROM transit_data.schedule as s
-            WHERE s."trip_id"='${id}';
+            WHERE s."trip_id"='${id}'
+            ORDER BY s."id" ASC;
         `).catch(e => console.log(e));
     }
 

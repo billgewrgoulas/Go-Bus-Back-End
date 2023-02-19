@@ -6,6 +6,7 @@ export class ArrivalDto{
     public departureSeconds: number;
     public arrivalMins: number;
     public arrivalSeconds: number;
+    public delayMins: number;
     public occupancy: number;
     public routeCode: string;
     public vehicleCode: string;
@@ -23,8 +24,8 @@ export class ArrivalDto{
         this.lineCode = arr.lineCode;
         this.latitude = arr.latitude;
         this.longitude = arr.longitude;
-        this.arrivalMins = -1;
-        this.arrivalSeconds = -1;
+        this.arrivalMins = 0;
+        this.arrivalSeconds = 0;
     }
 
 }

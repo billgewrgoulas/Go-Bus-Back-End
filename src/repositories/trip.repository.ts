@@ -98,6 +98,7 @@ export class TripRepository extends IGenericRepository<Trip>{
             SELECT *
             FROM transit_data.trip AS t
             WHERE t."day"=${day} AND t."routeCode"='${routeCode}' AND t."stopCode"='${stopCode}'
+            ORDER BY trip."id" ASC;
         `).catch(e => console.log(e));
     }
 

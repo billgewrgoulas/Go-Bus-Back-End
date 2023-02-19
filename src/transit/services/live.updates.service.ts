@@ -4,13 +4,14 @@ import { lastValueFrom } from 'rxjs';
 import { DataService } from './data.service';
 import { ArrivalDto } from '../transitDtos/arrival.dto';
 import { Stop } from '../entities/stop.entity';
+import { Schedule } from '../entities/schedule.entity';
 
 
 @Injectable()
 export class LiveUpdatesService {
 
-    private readonly token: string = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NzU4NTEwMzJ9.k_Zny_XOg1885v7WJDZf6oAXhqjaQ1AQyUGyACxgBfc';
-    private readonly uri: string = 'https://dev-rest.citybus.gr/api/v1/el/106/';
+    private readonly token: string = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NzY5MTQwMjZ9.Ho_Xyc3tiephzApThP3f7edCA-4IdZ4yVPFVqE4ibgg';
+    private readonly uri: string = 'https://rest.citybus.gr/api/v1/el/106/';
     
     constructor(private http: HttpService, private data: DataService){}
 
@@ -39,8 +40,6 @@ export class LiveUpdatesService {
         for (const arrival of arrivals) {
 
             if(+arrival.latitude == 0 || +arrival.longitude == 0){
-                arrival.arrivalMins = 0;
-                arrival.arrivalSeconds = 0;
                 continue;
             }
 
@@ -63,9 +62,33 @@ export class LiveUpdatesService {
 
             arrival.arrivalMins = arrivalMins;
             arrival.arrivalSeconds = arrivalSeconds;
+
+            const day: number = new Date().getDay();
+            const schedule: Schedule[] = await this.data.schedule.getTrips(arrival.routeCode, day, stopCode);
+
+            if(schedule.length == 0){
+                continue;
+            }
+
+            arrival.delayMins = this.getDelay(schedule, arrival);
         }
 
         return arrivals;
+    }
+
+    private getDelay(sch: Schedule[], arr: ArrivalDto){
+
+        const departure: number = arr.departureMins * 60 + arr.departureSeconds;
+        const times: number[] = sch.map(s => s.tripTimeHour * 60 + s.tripTimeMinute);
+        const dif: number[] = times.map(t => departure - t);
+        const delay: number = Math.min(...dif);
+        const delayMins: number = Math.ceil(delay / 60);
+
+        if(Math.abs(delayMins) < 5){
+            return delayMins;
+        }
+
+        return 0;
     }
 
 }
