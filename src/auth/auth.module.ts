@@ -11,7 +11,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 @Module({
   imports: [
     PassportModule, 
-    TypeOrmModule,
     JwtModule.register({
       secret: jwtConstants.secret,
       signOptions: { 

@@ -14,6 +14,7 @@ export class ArrivalDto{
     public lineCode: string;
     public longitude: string;
     public latitude: string;
+    public stop: string;
 
     public constructor(arr: any){
         this.departureMins = arr.departureMins;

@@ -10,7 +10,7 @@ import { Schedule } from '../entities/schedule.entity';
 @Injectable()
 export class LiveUpdatesService {
 
-    private readonly token: string = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NzY5MTQwMjZ9.Ho_Xyc3tiephzApThP3f7edCA-4IdZ4yVPFVqE4ibgg';
+    private readonly token: string = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NzcwNjc3MzJ9.CQ24fO4ha75xLy2hBYK5fIEFjuDctGbwovystv8PaQs';
     private readonly uri: string = 'https://rest.citybus.gr/api/v1/el/106/';
     
     constructor(private http: HttpService, private data: DataService){}
@@ -70,6 +70,7 @@ export class LiveUpdatesService {
                 continue;
             }
 
+            arrival.stop = `${stop.desc}(${stop.code})`;
             arrival.delayMins = this.getDelay(schedule, arrival);
         }
 
@@ -78,14 +79,14 @@ export class LiveUpdatesService {
 
     private getDelay(sch: Schedule[], arr: ArrivalDto){
 
-        const departure: number = arr.departureMins * 60 + arr.departureSeconds;
+        const date: Date = new Date();
+        const departure: number = date.getHours() * 60 + date.getMinutes() + arr.departureMins;
         const times: number[] = sch.map(s => s.tripTimeHour * 60 + s.tripTimeMinute);
         const dif: number[] = times.map(t => departure - t);
         const delay: number = Math.min(...dif);
-        const delayMins: number = Math.ceil(delay / 60);
 
-        if(Math.abs(delayMins) < 5){
-            return delayMins;
+        if(Math.abs(delay) < 11){
+            return delay;
         }
 
         return 0;
