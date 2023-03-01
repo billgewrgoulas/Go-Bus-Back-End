@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
-import { UserRepository } from 'src/repositories/user.repository';
+import { SavedRepository } from 'src/repositories/saved.repository';
 import { BookingsController } from './controllers/bookings.controller';
 import { TransitModule } from 'src/transit/transit.module';
 import { TransitGateWay } from 'src/socketsIO/transit.gateway';
@@ -18,7 +18,7 @@ import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
     imports: [TypeOrmModule.forFeature([User, UserRoute, UserStop, Booking]), TransitModule, AuthModule],
-    providers: [ UserRepository, SavedService, BookingService, BookingRepository],
+    providers: [ SavedRepository, SavedService, BookingService, BookingRepository],
     controllers: [BookingsController, SavedController, UserController],
     exports: []
 })

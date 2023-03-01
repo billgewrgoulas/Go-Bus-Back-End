@@ -7,21 +7,10 @@ import { UserStop } from "src/user/entities/userStop.entity";
 import { UserRoute } from "src/user/entities/userRoute.entity";
 
 @Injectable()
-export class UserRepository extends IGenericRepository<User>{
+export class SavedRepository extends IGenericRepository<User>{
 
-    constructor(
-        @InjectRepository(User) userRepo: Repository<User>, 
-        @InjectDataSource() db: DataSource)    
-    {
-        super(userRepo, db);
-    }
-
-    public override getOne(email: string): Promise<User | void> {
-        return super.getOne({email: email});
-    }
-
-    public override async insertOne(data: User) {
-        super.insertOne(data);
+    constructor(@InjectDataSource() db: DataSource){
+        super(undefined, db);
     }
 
     public insertStop(code: string, user_id: string){

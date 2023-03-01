@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { use } from 'passport';
-import { UserRepository } from 'src/repositories/user.repository';
+import { SavedRepository } from 'src/repositories/saved.repository';
 import { DataService } from 'src/transit/services/data.service';
 
 @Injectable()
 export class SavedService {
 
-    constructor(private repo: UserRepository, private data: DataService) {}
+    constructor(private repo: SavedRepository, private data: DataService) {}
 
     public insertStop(code: string, user: string){
         this.repo.insertStop(code, user);

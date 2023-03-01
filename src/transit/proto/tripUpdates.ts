@@ -70,8 +70,8 @@ export default class TripUpdates{
             const entity: FeedEntity = {id: i + '', tripUpdate: tripUpdate};
 
             for (let j = 0; j < sch.length; j++) {
-                const arr: number = sch[j].tripTimeMinute + Date.now() + 1;
-                const dep: number = sch[j].tripTimeMinute + Date.now() + 2;
+                const arr: number = sch[j].tripTimeMinute * 60000 + Date.now() + 60000;
+                const dep: number = sch[j].tripTimeMinute * 60000 + Date.now() + 2 * 60000;
                 const arrival: StopTimeEvent = {time: arr};
                 const departure: StopTimeEvent = {time: dep};
                 const stopTimeUpdate: StopTimeUpdate = {stopId: sch[j].stopCode, stopSequence: j, arrival: arrival, departure: departure};
