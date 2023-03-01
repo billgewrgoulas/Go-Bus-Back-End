@@ -49,7 +49,7 @@ export interface TripDescriptor {
     startDate?: string;
 }
 
-export default class Trip{
+export default class TripUpdates{
 
     private data: DataService;
     private trip_ids: number[] = [159613, 158744];
@@ -58,7 +58,7 @@ export default class Trip{
         this.data = data;
     }
 
-    public async updateContructor(){
+    public async tripUpdates(){
   
         const header: FeedHeader = {gtfsRealtimeVersion: '2', incrementality: 1, timestamp: Date.now()};
         const message: FeedMessage = {header: header, entity: []};

@@ -5,6 +5,8 @@ import { DataService } from './data.service';
 import { ArrivalDto } from '../transitDtos/arrival.dto';
 import { Stop } from '../entities/stop.entity';
 import { Schedule } from '../entities/schedule.entity';
+import Trip, { FeedMessage } from '../proto/tripUpdates';
+var protobuf = require('protobufjs');
 
 
 @Injectable()
@@ -20,6 +22,21 @@ export class LiveUpdatesService {
         return await lastValueFrom(this.http.get(this.uri + action, {withCredentials: false, headers:{
             Authorization: 'Bearer ' + this.token,
         }})).catch(e => console.log('remote api cant be reached'));
+    }
+
+    public async busLocations(line: string): Promise<ArrivalDto[]>{
+
+        const arrivalsPromise = <any>await this.getLiveData(line, 'lines/live/');
+        const arrivals: ArrivalDto[] = [];
+
+        if(arrivalsPromise && arrivalsPromise.data){
+            for (const e of arrivalsPromise.data) {
+                const arrival = new ArrivalDto(e);
+                arrivals.push(arrival);
+            }
+        }   
+        
+        return arrivals;
     }
 
     public async liveDataBuilder(stopCode: string): Promise<ArrivalDto[]>{
