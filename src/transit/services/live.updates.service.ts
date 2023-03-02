@@ -12,7 +12,7 @@ var protobuf = require('protobufjs');
 @Injectable()
 export class LiveUpdatesService {
 
-    private readonly token: string = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NzcwNjc3MzJ9.CQ24fO4ha75xLy2hBYK5fIEFjuDctGbwovystv8PaQs';
+    private readonly token: string = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2Nzc5MTg5MDd9.ZGKQ1QnzYA-wfe93bE8YzvdarP98l2-W-KxWpm1YUXc';
     private readonly uri: string = 'https://rest.citybus.gr/api/v1/el/106/';
     
     constructor(private http: HttpService, private data: DataService){}
