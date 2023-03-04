@@ -69,7 +69,7 @@ export class BookingService {
         const diff: number = Math.floor((schedule_date - now)/60000);
 
         if(diff < 30){
-            this.throwError('Δεν είναι δυνατή η κράτηση αυτήν την ωρα');
+            this.throwError('Δεν είναι δυνατή η κράτηση μέσα σε λιγότερο από 30 λεπτά πρίν την αναχώρηση');
         }
     }
 
