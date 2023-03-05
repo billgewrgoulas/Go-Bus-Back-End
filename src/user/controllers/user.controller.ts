@@ -25,10 +25,12 @@ export class UserController {
         return this.auth.login(req.user);
     }
 
-    @UseGuards(JwtAuthGuard)
-    @Get('profile')
-    public getProfile(@Request() req: any): Promise<any> {
-        return req.user;
+    @UseGuards(LocalAuthGuard)
+    @Header('Content-Type', 'application/json')
+    @Post('login')
+    @UsePipes(ValidationPipe)
+    public async editProfile(@Request() req: any): Promise<any> {
+        return this.auth.login(req.user);
     }
-    
+  
 }
